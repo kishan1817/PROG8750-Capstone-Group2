@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 <?php
 $title = "Home Page";
 include('include/head.php');
 include('include/header.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+=======
+x`<?php
+	$title = "Home Page";
+	include ('include/head.php');
+	include ('include/header.php');
+
+	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+>>>>>>> 9b9a2112ff5531414013dfce567e5f237ecaab39
     include('include/config.php');
 
     // Retrieve form data
@@ -25,7 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Validate password
+<<<<<<< HEAD
     if (!preg_match("/^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,}$/", $password)) {
+=======
+    if (!preg_match("/^(?=.\d)(?=.[A-Z])(?=.*\W).{8,}$/", $password)) {
+>>>>>>> 9b9a2112ff5531414013dfce567e5f237ecaab39
         $errorMsg .= 'Password must be at least 8 characters long, include at least one uppercase letter, one symbol, and one number.\\n';
     }
 
@@ -64,7 +77,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9b9a2112ff5531414013dfce567e5f237ecaab39
 	<main class="main">
       <section class="pt-100 login-register">
         <div class="container"> 
@@ -80,11 +96,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <form class="login-register text-start mt-20" action="register.php" method="post">
                 <div class="form-group">
                   <label class="form-label" for="First_Name">First Name *</label>
+<<<<<<< HEAD
                   <input class="form-control" id="First_Name" type="text" required="" name="First_Name" placeholder="John">
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="Last_Name">Last Name *</label>
                   <input class="form-control" id="Last_Name" type="text" required="" name="Last_Name" placeholder="Mohn">
+=======
+                  <input class="form-control" id="First_Name" type="text" required="" name="First_Name" placeholder="Ajay">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="Last_Name">Last Name *</label>
+                  <input class="form-control" id="Last_Name" type="text" required="" name="Last_Name" placeholder="Gosai">
+>>>>>>> 9b9a2112ff5531414013dfce567e5f237ecaab39
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="Phone">Phone Number*</label>
@@ -92,7 +116,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="Email">Email *</label>
+<<<<<<< HEAD
                   <input class="form-control" id="Email" type="email" required="" name="Email" placeholder="Johnmohn@gmail.com">
+=======
+                  <input class="form-control" id="Email" type="email" required="" name="Email" placeholder="ajaygosai@gmail.com">
+>>>>>>> 9b9a2112ff5531414013dfce567e5f237ecaab39
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="Password">Password *</label>
