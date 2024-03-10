@@ -1,4 +1,4 @@
-<?php
+x`<?php
 	$title = "Home Page";
 	include ('include/head.php');
 	include ('include/header.php');
