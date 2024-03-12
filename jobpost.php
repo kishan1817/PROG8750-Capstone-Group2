@@ -6,14 +6,30 @@
 include 'include/config.php';
 
 // Initialize message variable
+
+$Job_id = isset($_GET['Job_id']) ? htmlspecialchars($_GET['Job_id']) : '';
+if (isset($_GET['Job_id'])) {
+    $query = "SELECT * FROM tbl_jobs WHERE Job_id = ?";
+    $stmt = $dbconnection->prepare($query);
+    $stmt->bind_param("i", $Job_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $job_post = $result->fetch_assoc();
+    } else {
+        echo "Job post not found";
+        exit;
+    }
+}
+
 $msg = "";
 $res = false;
 
 // If the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve and sanitize input
-    $company = htmlspecialchars($_POST['company']);
-    $title = htmlspecialchars($_POST['title']);
+    $company = $_POST['company'];
+    $title = $_POST['title'];
     $description = htmlspecialchars($_POST['description']);
     $location = htmlspecialchars($_POST['location']);
     $salary = floatval($_POST['salary']);
@@ -31,7 +47,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate required fields
     if (empty($company) || empty($title) || empty($description) || empty($location) || empty($salary) || empty($industry) || empty($job_type) || empty($job_level) || empty($experience) || empty($deadline)) {
         $msg = "Please fill in all required fields.";
-    } else {
+    } elseif (isset($_POST['Job_id']) && !empty($_POST['Job_id']))  {
+        // echo var_dump($_POST);
+        $update_query = "UPDATE tbl_jobs SET Company = ?, Logo = ?, Title = ?, Description = ?, Location = ?, Salary = ?, Industry = ?, Job_type = ?, Job_level = ?, Experience = ?, Deadline = ?, Posted_at = ? WHERE Job_id = ?";
+        $update_stmt = $dbconnection->prepare($update_query);
+        $update_stmt->bind_param("sssssdsssissi", $company, $targetFilePath, $title, $description, $location, $salary, $industry, $job_type, $job_level, $experience, $deadline, $posted_at, $Job_id);
+        if ($update_stmt->execute()) {
+            $msg = "Job post updated successfully.";
+        } else {
+            $msg = "Error updating record: " . $dbconnection->error;
+        }
+    } 
+    else {
         // Handle file upload for logo
         if (isset($_FILES['logo']['name']) && $_FILES['logo']['error'] == 0) {
             $targetDir = "Images/";
@@ -71,7 +98,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </body>
       
 <?php
-//echo $msg;
 if($res==true){
             echo "<script>
             swal({
@@ -94,7 +120,7 @@ else{
             });
           </script>";
      }
-}
+ }
 
 ?>
 
@@ -103,52 +129,53 @@ else{
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-12">
+                    <input type="hidden" name="Job_id" value="<?php echo $Job_id; ?>">
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Company Name *</label>
-                        <input class="form-control" type="text" name="company" required>
+                        <input class="form-control" type="text" name="company" value="<?php echo isset($job_post['Company']) && !empty(trim($job_post['Company'])) ? htmlspecialchars($job_post['Company']) : ''; ?>" required>
                     </div>
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Location *</label>
-                        <input class="form-control" type="text" name="location" required>
+                        <input class="form-control" type="text" name="location" value="<?php echo isset($job_post['Location']) && !empty(trim($job_post['Location'])) ? htmlspecialchars($job_post['Location']) : ''; ?>" required>
                     </div>
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Title *</label>
-                        <input class="form-control" type="text" name="title" required>
+                        <input class="form-control" type="text" name="title" value="<?php echo isset($job_post['Title']) && !empty(trim($job_post['Title'])) ? htmlspecialchars($job_post['Title']) : ''; ?>" required>
                     </div>
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Salary *</label>
-                        <input class="form-control" type="text" name="salary" required>
+                        <input class="form-control" type="text" name="salary" value="<?php echo isset($job_post['Salary']) && !empty(trim($job_post['Salary'])) ? htmlspecialchars($job_post['Salary']) : ''; ?>" required>
                     </div>
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Industry *</label>
-                        <input class="form-control" type="text" name="industry" required>
+                        <input class="form-control" type="text" name="industry" value="<?php echo isset($job_post['Industry']) && !empty(trim($job_post['Industry'])) ? htmlspecialchars($job_post['Industry']) : ''; ?>" required>
                     </div>
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Job Type *</label>
-                        <input class="form-control" type="text" name="job_type" required>
+                        <input class="form-control" type="text" name="job_type" value="<?php echo isset($job_post['Job_type']) && !empty(trim($job_post['Job_type'])) ? htmlspecialchars($job_post['Job_type']) : ''; ?>" required>
                     </div>
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Job Level *</label>
-                        <input class="form-control" type="text" name="job_level" required>
+                        <input class="form-control" type="text" name="job_level" value="<?php echo isset($job_post['Job_level']) && !empty(trim($job_post['Job_level'])) ? htmlspecialchars($job_post['Job_level']) : ''; ?>" required>
                     </div>
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Experience *</label>
-                        <input class="form-control" type="text" name="experience" required>
+                        <input class="form-control" type="text" name="experience" value="<?php echo isset($job_post['Experience']) && !empty(trim($job_post['Experience'])) ? htmlspecialchars($job_post['Experience']) : ''; ?>" required>
                     </div>
                   
                    
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Description *</label>
-                        <textarea class="form-control" name="description" rows="4" required></textarea>
+                        <textarea class="form-control" name="description" rows="4" value="<?php echo isset($job_post['Description']) && !empty(trim($job_post['Description'])) ? htmlspecialchars($job_post['Description']) : ''; ?>" required></textarea>
                     </div>
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Logo *</label>
-                        <input class="form-control" type="file" name="logo" accept="image/*" required>
+                        <input class="form-control" type="file" name="logo" accept="image/*" value="<?php echo isset($job_post['Logo']) && !empty(trim($job_post['Logo'])) ? htmlspecialchars($job_post['Logo']) : ''; ?>" required>
                     </div>
                 
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Deadline *</label>
-                        <input class="form-control" type="date" name="deadline" required>
+                        <input class="form-control" type="date" name="deadline" value="<?php echo isset($job_post['Deadline']) && !empty(trim($job_post['Deadline'])) ? htmlspecialchars($job_post['Deadline']) : ''; ?>" required>
                     </div>
                     <div class="box-button mt-15">
                         <button class="btn btn-apply-big font-md font-bold">Post Job</button>
