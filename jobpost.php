@@ -48,20 +48,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($company) || empty($title) || empty($description) || empty($location) || empty($salary) || empty($industry) || empty($job_type) || empty($job_level) || empty($experience) || empty($deadline)) {
         $msg = "Please fill in all required fields.";
     } elseif (isset($_POST['Job_id']) && !empty($_POST['Job_id']))  {
-        // echo var_dump($_POST);
-        $update_query = "UPDATE tbl_jobs SET Company = ?, Logo = ?, Title = ?, Description = ?, Location = ?, Salary = ?, Industry = ?, Job_type = ?, Job_level = ?, Experience = ?, Deadline = ?, Posted_at = ? WHERE Job_id = ?";
-        $update_stmt = $dbconnection->prepare($update_query);
-        $update_stmt->bind_param("sssssdsssissi", $company, $targetFilePath, $title, $description, $location, $salary, $industry, $job_type, $job_level, $experience, $deadline, $posted_at, $Job_id);
-        if ($update_stmt->execute()) {
-            $msg = "Job post updated successfully.";
+        
+        $targetDir = "StoredImages/";
+        $fileName = basename($_FILES["logo"]["name"]);
+        $targetFilePath = $targetDir . $fileName;
+        $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+
+        // Attempt to upload file
+        if(move_uploaded_file($_FILES["logo"]["tmp_name"], $targetFilePath)){
+            // Prepare the update query including the Logo path
+            $update_query = "UPDATE tbl_jobs SET Company = ?, Logo = ?, Title = ?, Description = ?, Location = ?, Salary = ?, Industry = ?, Job_type = ?, Job_level = ?, Experience = ?, Deadline = ?, Posted_at = ? WHERE Job_id = ?";
+            $update_stmt = $dbconnection->prepare($update_query);
+            // Bind parameters
+            $update_stmt->bind_param("sssssdsssissi", $company, $targetFilePath, $title, $description, $location, $salary, $industry, $job_type, $job_level, $experience, $deadline, $posted_at, $Job_id);
+
+            // Execute the statement
+            if ($update_stmt->execute()) {
+                $msg = "Job post updated successfully.";
+                $res = true;
+            } else {
+                $msg = "Error updating record: " . $dbconnection->error;
+            }
         } else {
-            $msg = "Error updating record: " . $dbconnection->error;
+            // Handle failed upload
+            $msg = "There was an error uploading the Image.";
         }
+        //echo $msg;
     } 
     else {
         // Handle file upload for logo
         if (isset($_FILES['logo']['name']) && $_FILES['logo']['error'] == 0) {
-            $targetDir = "Images/";
+            $targetDir = "StoredImages/";
             $fileName = basename($_FILES["logo"]["name"]);
             $targetFilePath = $targetDir . $fileName;
             $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
@@ -166,7 +183,7 @@ else{
                    
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Description *</label>
-                        <textarea class="form-control" name="description" rows="4" value="<?php echo isset($job_post['Description']) && !empty(trim($job_post['Description'])) ? htmlspecialchars($job_post['Description']) : ''; ?>" required></textarea>
+                        <textarea class="form-control" name="description" rows="4" value="<?php echo isset($job_post['Description']) && !empty(trim($job_post['Description'])) ? htmlspecialchars($job_post['Description']) : ''; ?>" required><?php echo isset($job_post['Description']) && !empty(trim($job_post['Description'])) ? htmlspecialchars($job_post['Description']) : ''; ?></textarea>
                     </div>
                     <div class="form-group">
                         <label class="font-sm color-text-mutted mb-10">Logo *</label>
