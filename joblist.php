@@ -326,414 +326,97 @@
               </div>
             </div>
             <div class="row">
+              
+              <?php 
+
+                $query = "SELECT * FROM tbl_jobs ORDER BY Posted_at DESC";
+                $result = mysqli_query($dbconnection, $query);
+                $jobCount = 0; // Counter to keep track of jobs
+                // Function to truncate job description
+                function truncate_description($text, $maxChars = 100) {
+                  if (strlen($text) > $maxChars) {
+                      $text = substr($text, 0, $maxChars) . '...';
+                  }
+                  return $text;
+                }
+
+                if (mysqli_num_rows($result) > 0) {
+                    echo '<div class="row">'; // Start the first row
+
+                    // Loop through each job and display its details
+                    while($row = mysqli_fetch_assoc($result)) {
+                        // For every job, increment the counter
+                        $jobCount++;
+              ?>
               <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-1.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>LinkedIn</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>UI / UX Designer fulltime</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Fulltime</span><span class="card-time">4<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Adobe XD</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Figma</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Photoshop</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$50</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
+                  <div class="card-grid-2 hover-up">
+                      <div class="card-grid-2-image-left">
+                          <div class="image-box"><img src="<?php echo $row['Logo']; ?>" alt="<?php echo $row['Company']; ?>"></div>
+                          <div class="right-info">
+                              <a class='name-job' href='company-details.php?job_id=<?php echo $row['Job_id']; ?>'><?php echo $row['Company']; ?></a>
+                              <span class="location-small"><?php echo $row['Location']; ?></span>
+                          </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-2.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Adobe Ilustrator</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>Full Stack Engineer</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Part time</span><span class="card-time">5<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>React</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>NodeJS</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$80</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
+                      <div class="card-block-info">
+                          <h6><a href='job-details.html'><?php echo $row['Title']; ?></a></h6>
+                          <div class="mt-5">
+                              <span class="card-briefcase"><?php echo $row['Job_type']; ?></span>
+                              <span class="card-time"><?php echo $row['Posted_at']; // You might want to format this date or calculate the time ago ?></span>
+                          </div>
+                          <p class="font-sm color-text-paragraph mt-15"><?php echo truncate_description($row['Description']); ?></p>
+                          <!-- Dynamically generate skill tags or categories here if applicable -->
+                          <div class="mt-30">
+                              <!-- Example: <a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Skill 1</a> -->
+                          </div>
+                          <div class="card-2-bottom mt-30">
+                              <div class="row">
+                                  <div class="col-lg-7 col-7">
+                                      <span class="card-text-price">$<?php echo $row['Salary']; ?></span>
+                                      <span class="text-muted">/Hour</span>
+                                  </div>
+                                  <div class="col-lg-5 col-5 text-end">
+                                      <div><a class="btn btn-apply-now" href="jobdetails.php?job_id=<?php echo $row['Job_id']; ?>">Apply now</a></div>
+                                  </div>
+                              </div>
+                          </div>
                       </div>
-                    </div>
                   </div>
-                </div>
               </div>
+              <?php
+                      // Check if 3 jobs have been displayed
+                      if ($jobCount % 3 == 0) {
+                          echo '</div><div class="row">'; // Close the current row and start a new one
+                      }
+                  }
+
+                  // Close the last row div if needed
+                  if ($jobCount % 3 != 0) {
+                      echo '</div>'; // This closes the row if there weren't exactly three jobs in the last row
+                  }
+              } else {
+                  echo '<p>No job postings available at the moment.</p>';
+              }
+              ?>
+
+              
+              
+              
+              
               <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-3.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Bing Search</a><span class="location-small">Cambridge, CA</span></div>
+                <div >
+                  <div >
+                    <div class="image-box"></div>
+                    <div class="right-info"></div>
                   </div>
                   <div class="card-block-info">
-                    <h6><a href='job-details.html'>Java Software Engineer</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Full time</span><span class="card-time">6<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Python</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>AWS</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Photoshop</a>
-                    </div>
+                    <h6></h6>
+                    <div class="mt-5"></div>
+                    <div class="mt-30"></div>
                     <div class="card-2-bottom mt-30">
                       <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$25</span><span class="text-muted">/Hour</span></div>
+                        <div class="col-lg-7 col-7"></div>
                         <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-4.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Dailymotion</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>Frontend Developer</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Full time</span><span class="card-time">6<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Typescript</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Java</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$25</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-5.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Linkedin</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>React Native Web Developer</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Fulltime</span><span class="card-time">4<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Angular</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$50</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-6.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Quora JSC</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>Senior System Engineer</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Part time</span><span class="card-time">5<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='job-details.html'>PHP</a><a class='btn btn-grey-small mr-5' href='job-details.html'>Android</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$80</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-7.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Nintendo</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>Products Manager</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Full time</span><span class="card-time">6<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='job-details.html'>ASP .Net</a><a class='btn btn-grey-small mr-5' href='job-details.html'>Figma</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$25</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-8.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Periscope</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>Lead Quality Control QA</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Full time</span><span class="card-time">6<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='job-details.html'>iOS</a><a class='btn btn-grey-small mr-5' href='job-details.html'>Laravel</a><a class='btn btn-grey-small mr-5' href='job-details.html'>Golang</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$25</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-1.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>LinkedIn</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>UI / UX Designer fulltime</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Fulltime</span><span class="card-time">4<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Adobe XD</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Figma</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Photoshop</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$50</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-2.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Adobe Ilustrator</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>Full Stack Engineer</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Part time</span><span class="card-time">5<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>React</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>NodeJS</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$80</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-3.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Bing Search</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>Java Software Engineer</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Full time</span><span class="card-time">6<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Python</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>AWS</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Photoshop</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$25</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-4.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Dailymotion</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>Frontend Developer</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Full time</span><span class="card-time">6<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Typescript</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Java</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$20</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-5.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Linkedin</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>React Native Web Developer</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Fulltime</span><span class="card-time">4<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Angular</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$50</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-6.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Quora JSC</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>Senior System Engineer</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Part time</span><span class="card-time">5<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='job-details.html'>PHP</a><a class='btn btn-grey-small mr-5' href='job-details.html'>Android</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$80</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-7.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Nintendo</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>Products Manager</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Full time</span><span class="card-time">6<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='job-details.html'>ASP .Net</a><a class='btn btn-grey-small mr-5' href='job-details.html'>Figma</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$23</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-8.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Periscope</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>Lead Quality Control QA</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Full time</span><span class="card-time">6<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='job-details.html'>iOS</a><a class='btn btn-grey-small mr-5' href='job-details.html'>Laravel</a><a class='btn btn-grey-small mr-5' href='job-details.html'>Golang</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$20</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-1.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>LinkedIn</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>UI / UX Designer fulltime</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Fulltime</span><span class="card-time">4<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Adobe XD</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Figma</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Photoshop</a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$18</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                <div class="card-grid-2 hover-up">
-                  <div class="card-grid-2-image-left">
-                    <div class="image-box"><img src="dist/images/brands/brand-2.png" alt="jobnest"></div>
-                    <div class="right-info"><a class='name-job' href='company-details.html'>Adobe Ilustrator</a><span class="location-small">Cambridge, CA</span></div>
-                  </div>
-                  <div class="card-block-info">
-                    <h6><a href='job-details.html'>Full Stack Engineer</a></h6>
-                    <div class="mt-5"><span class="card-briefcase">Part time</span><span class="card-time">5<span> minutes ago</span></span></div>
-                    <p class="font-sm color-text-paragraph mt-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae architecto eveniet, dolor quo repellendus pariatur.</p>
-                    <div class="mt-30"><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>React</a><a class='btn btn-grey-small mr-5' href='jobs-grid.html'>NodeJS                            </a>
-                    </div>
-                    <div class="card-2-bottom mt-30">
-                      <div class="row">
-                        <div class="col-lg-7 col-7"><span class="card-text-price">$80</span><span class="text-muted">/Hour</span></div>
-                        <div class="col-lg-5 col-5 text-end">
-                          <div><a class="btn btn-apply-now" href="jobdetails.php">Apply now</a></div>
+                          <div></div>
                         </div>
                       </div>
                     </div>
