@@ -1,10 +1,35 @@
-<?php
-    $title = "Home Page";
-    include ('include/head.php');
-    include ('include/header.php');
-?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login Page</title>
+    <style>
+        /* Center the logo image */
+body, html {
+    height: 100%;
+    margin-top: 10px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.logo-container img {
+    display: block; /* Ensure the image is centered properly */
+    margin: 0 auto; /* Center the image horizontally */
+}
+        </style>
+           <link href="dist/css/style.css" rel="stylesheet">
+    </head>
+<body>
 <main>
+<div class="logo-container">
+            <img src="./dist/images/logo.png" alt="jobnest" width="170" height="100">
+        </div>
 <div class="container mt-5">
+
 <h3>JobNest Admin Dashboard</h3>
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -183,7 +208,5 @@
     </div>
 </div>
 </main>
-<?php
-    include ('include/footer.php');
-    include ('include/script.php');
-?>
+</body>
+</html>
