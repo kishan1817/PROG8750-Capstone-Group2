@@ -3,25 +3,24 @@
 <head>
     <title>Admin Login Page</title>
     <style>
-        /* Admin Login Css */
-        /* body background css */
+        /* Admin CSS Starts */
         body {
             padding: 0;
             margin: 0;
             background-size: cover;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
             height: 100vh;
         }
 
-        /* logo image css */
+   
         .logo {
-            margin-bottom: 20px; /* Adjust spacing between logo and form */
+            margin-bottom: 20px;
+            margin-top:30px; 
         }
 
-        /* login form css */
+     
         .form {
             font-family: "Roboto", sans-serif;
             position: relative;
@@ -98,7 +97,7 @@
 </head>
 <body>
     <div class="logo">
-        <img src="./dist/images/logo.png" alt="jobnest" width="170" height="100">
+        <img src="../dist/images/logo.png" alt="jobnest" width="170" height="100">
     </div>
     <div class="form">
         <p>Admin Login</p>
@@ -111,11 +110,7 @@
 
     <script>
         document.getElementById("loginForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the form from submitting normally
-
-            // Optionally, perform form validation here
-
-            // Navigate to the target page
+            event.preventDefault();
             window.location.href = this.getAttribute("action");
         });
     </script>
