@@ -1,9 +1,9 @@
 <?php
-	$title = "Home Page";
-	include ('include/head.php');
-	include ('include/header.php');
+$title = "Home Page";
+include('include/head.php');
+include('include/header.php');
 
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include('include/config.php');
 
     // Retrieve form data
@@ -26,7 +26,6 @@
 
     // Validate password
     if (!preg_match("/^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,}$/", $password)) {
-    if (!preg_match("/^(?=.\d)(?=.[A-Z])(?=.*\W).{8,}$/", $password)) {
         $errorMsg .= 'Password must be at least 8 characters long, include at least one uppercase letter, one symbol, and one number.\\n';
     }
 
@@ -86,11 +85,6 @@
                 <div class="form-group">
                   <label class="form-label" for="Last_Name">Last Name *</label>
                   <input class="form-control" id="Last_Name" type="text" required="" name="Last_Name" placeholder="Mohn">
-                  <input class="form-control" id="First_Name" type="text" required="" name="First_Name" placeholder="Ajay">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="Last_Name">Last Name *</label>
-                  <input class="form-control" id="Last_Name" type="text" required="" name="Last_Name" placeholder="Gosai">
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="Phone">Phone Number*</label>
@@ -99,7 +93,6 @@
                 <div class="form-group">
                   <label class="form-label" for="Email">Email *</label>
                   <input class="form-control" id="Email" type="email" required="" name="Email" placeholder="Johnmohn@gmail.com">
-                  <input class="form-control" id="Email" type="email" required="" name="Email" placeholder="ajaygosai@gmail.com">
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="Password">Password *</label>
