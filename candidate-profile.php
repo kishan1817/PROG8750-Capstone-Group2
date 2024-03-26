@@ -23,6 +23,7 @@ $stmt = $dbconnection->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
+$jobCount=0;
 ?>
 	<main class="main">
       <section class="section-box-2">
@@ -155,61 +156,81 @@ $result = $stmt->get_result();
                   <!-- Job post display start-->
                     <div class="tab-pane fade" id="tab-my-jobs" role="tabpanel" aria-labelledby="tab-my-jobs">
                     <div><h3 class="mt-0 color-brand-1 mb-50">My Jobs</h3></div>
-                    <div class="row display-list">
-                    <?php
-                            if ($result->num_rows > 0) {
-                                while($row = $result->fetch_assoc()) {
-                                    $logoPath = htmlspecialchars($row['Logo']);
-                                    $companyName = htmlspecialchars($row['Company']);
-                                    $jobTitle = htmlspecialchars($row['Title']);
-                                    $jobDescription = htmlspecialchars($row['Description']);
-                                    $jobLocation = htmlspecialchars($row['Location']);
-                                    $jobSalary = htmlspecialchars($row['Salary']);
-                                    $jobType = htmlspecialchars($row['Job_type']);
-                                    $postedAt = date("F j, Y", strtotime($row['Posted_at']));
-                                    $jobid =  htmlspecialchars($row['Job_id']);
-                                    echo <<<JOB
-                                    <div class="col-xl-12 col-12">
-                                        <div class="card-grid-2 hover-up">
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-12">
-                                                    <div class="card-grid-2-image-left">
-                                                    <form method="post" action="#">
-                                                      <input type="hidden" name="job_id" value="{$row['Job_id']}">
-                                                        <div class="image-box"><img src="$logoPath" alt="$companyName logo"></div>
-                                                        <div class="right-info"><a class="name-job" href="#">$companyName</a><span class="location-small">$jobLocation</span></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 text-start text-md-end pr-60 col-md-6 col-sm-12">
-                                                    <div class="pl-15 mb-15 mt-30">
-                                                        <a class="btn btn-grey-small mr-5" href="#">$jobType</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-block-info">
-                                                <h4><a href='job-details.html?job_id={$row['Job_id']}'>$jobTitle</a></h4>
-                                                <div class="mt-5"><span class="card-briefcase">$jobType</span><span class="card-time"><span>Posted on $postedAt</span></span></div>
-                                                <p class="font-sm color-text-paragraph mt-10">$jobDescription</p>
-                                                <div class="card-2-bottom mt-20">
-                                                    <div class="row">
-                                                        <div class="col-lg-7 col-7"><span class="card-text-price">$$jobSalary</span></div>
-                                                        <div class="col-lg-5 col-5 text-end">
-                                                            <span><a class="btn btn-warning" href="jobpost.php?Job_id={$row['Job_id']}">Edit Now</a></span>
-                                                            <span><button type="submit" name="delete_job" class="btn btn-danger">Delete</button></span></form>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <div class="row">
+                    <?php 
+
+                      $query = "SELECT * FROM tbl_jobs ORDER BY Posted_at DESC";
+                      $result = mysqli_query($dbconnection, $query);
+                      $jobCount = 0; // Counter to keep track of jobs
+                      // Function to truncate job description
+                      function truncate_description($text, $maxChars = 100) {
+                        if (strlen($text) > $maxChars) {
+                            $text = substr($text, 0, $maxChars) . '...';
+                        }
+                        return $text;
+                      }
+
+                      if (mysqli_num_rows($result) > 0) {
+                          echo '<div class="row">'; // Start the first row
+
+                          // Loop through each job and display its details
+                          while($row = mysqli_fetch_assoc($result)) {
+                              // For every job, increment the counter
+                              $jobCount++;
+                      ?>
+                      <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                        <div class="card-grid-2 hover-up">
+                            <div class="card-grid-2-image-left">
+                            <form method="POST" action="#">
+                              <input type="hidden" name="job_id" value="{$row['Job_id']}">
+                                <div class="image-box"><img src="<?php echo $row['Logo']; ?>" alt="<?php echo $row['Company']; ?>"></div>
+                                <div class="right-info">
+                                    <a class='name-job' href='company-details.php?job_id=<?php echo $row['Job_id']; ?>'><?php echo $row['Company']; ?></a>
+                                    <span class="location-small"><?php echo $row['Location']; ?></span>
+                                </div>
+                            </div>
+                            <div class="card-block-info">
+                                <h6><a href='job-details.html'><?php echo $row['Title']; ?></a></h6>
+                                <div class="mt-5">
+                                    <span class="card-briefcase"><?php echo $row['Job_type']; ?></span>
+                                    <span class="card-time"><?php echo $row['Posted_at']; // You might want to format this date or calculate the time ago ?></span>
+                                </div>
+                                <p class="font-sm color-text-paragraph mt-15"><?php echo truncate_description($row['Description']); ?></p>
+                                <!-- Dynamically generate skill tags or categories here if applicable -->
+                                <div class="mt-30">
+                                    <!-- Example: <a class='btn btn-grey-small mr-5' href='jobs-grid.html'>Skill 1</a> -->
+                                </div>
+                                <div class="card-2-bottom mt-30">
+                                    <div class="row">
+                                        <div class="col-lg-7 col-7">
+                                            <span class="card-text-price">$<?php echo $row['Salary']; ?></span>
+                                            <span class="text-muted">/Hour</span>
+                                        </div>
+                                        <div class="col-lg-5 col-5 text-end">
+                                            <div><span><a class="btn btn-warning" href="jobpost.php?Job_id=<?php echo $row['Job_id']?>">Edit</a></span></div>
+                                            <div><span><button type="submit" ndata-id="POST_ID" class="btn btn-danger" onclick="deleteItem(<?php echo $jobId; ?>)">Delete</button></span></form></div>
                                         </div>
                                     </div>
-                                  JOB;
-                                }
-                            } else {
-                                echo "<p>No job posts found.</p>";
-                            }
-                            ?>
+                                </div>
+                            </div>
                         </div>
-                 </div>
+                      </div>
+                      <?php
+                            // Check if 3 jobs have been displayed
+                            if ($jobCount % 3 == 0) {
+                                echo '</div><div class="row">'; // Close the current row and start a new one
+                            }
+                        }
+
+                        // Close the last row div if needed
+                        if ($jobCount % 3 != 0) {
+                            echo '</div>'; // This closes the row if there weren't exactly three jobs in the last row
+                        }
+                      } else {
+                        echo '<p>No job postings available at the moment.</p>';
+                      }
+                      ?>
+                 
                      <!-- Job post display ends--> 
                     <div class="paginations">
                       <ul class="pager">
@@ -480,93 +501,68 @@ $result = $stmt->get_result();
 		include ('include/footer.php');
 		include ('include/script.php');
 	?>
-	</body>
-  <script>
-function deleteItem(itemId) {
-    fetch('candidate-profile.php', { 
-        method: 'POST',
-        body: new URLSearchParams({ 'action': 'delete', 'itemId': itemId }),
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.success) {
-            document.getElementById('item-' + itemId).remove(); 
-            alert('Job post deleted successfully');
-        } else {
-            alert(data.message); // Handle failure
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        alert('An error occurred');
-    });
-}
-</script>
-
+	
+  
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script>document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        var postId = this.getAttribute('data-id');
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this post!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                // AJAX request to PHP script for deletion
+                fetch('delete_post.php', {
+                    method: 'POST',
+                    body: JSON.stringify({ id: postId }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        swal("Poof! Your post has been deleted!", {
+                            icon: "success",
+                        });
+                        // Optionally, remove the post element or refresh the page
+                    } else {
+                        swal("Error! There was a problem deleting your post.", {
+                            icon: "error",
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
  
 <?php 
-$res = false;
-if(isset($_POST['delete_job'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'delete'){
+  error_log("AJAX action: " . $_POST['action'] . ", itemId: " . $_POST['itemId']);
+
   
-  $job_id = filter_input(INPUT_POST, 'job_id', FILTER_SANITIZE_NUMBER_INT); // Sanitize the input
-
-  // Check if job_id is valid and not empty
-  if (!empty($job_id)) {
-      $sql = "DELETE FROM tbl_jobs WHERE Job_id = ?"; // SQL query to delete the job post
-
-      
-      if ($stmt = $dbconnection->prepare($sql)) {
-          // Bind the job_id parameter
-          $stmt->bind_param("i", $job_id); 
-
-          // Execute the statement
-          if ($stmt->execute()) {
-              $res = true;
-              $_SESSION['message'] = "Job post deleted successfully.";
-              echo "<script>
-              swal({
-                  title: \"Job Nest\",
-                  text: \"" . $_SESSION['message'] . "\",
-                  icon: \"success\"
-              }).then((value) => {
-                  window.location.href = '#tab-my-jobs'; 
-              });
-            </script>";
-            unset($_SESSION['message']);
-             
-          } else {
-              $_SESSION['message'] = "Error deleting job post.";
-          }
-
-          // Close the statement
-          $stmt->close();
-      } else {
-          $_SESSION['message'] = "Database prepare error.";
-      }
-  } else {
-      $_SESSION['message'] = "Invalid job ID.";
-  }
-
-  header("Location: candidate-profile.php");
-  exit;
-
-  if($res==false){
-  echo "<script>
-    swal({
-        title: \"Job Nest\",
-        text: \"" . $_SESSION['message'] . "\",
-        icon: \"error\"
-    }).then((value) => {
-        window.location.href = '#tab-my-jobs'; 
-    });
-  </script>";
-    unset($_SESSION['message']);
-  }
- 
+  // Assuming you're using PDO for database connection
+  require_once 'path/to/your/config.php';
+  
+  $data = json_decode(file_get_contents('php://input'), true);
+  $postId = $data['id'];
+  
+  // SQL to delete post
+  $sql = "DELETE FROM your_table_name WHERE Post_id = :postId";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([':postId' => $postId]);
+  
+  echo json_encode(['success' => true]);
+  
+  
 }
 
 ?>
-
+</body>
 </html>

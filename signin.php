@@ -10,18 +10,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $query = "SELECT * FROM tbl_users WHERE Email='$email'"; 
     $result = mysqli_query($dbconnection, $query);
-?>
-<body>
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        </body>
-      
-<?php
     
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         
         if ($password==$row['Password']) {
-          $_SESSION['User_id'] = $row['User_id'];
+          $_SESSION['User_id'] = $row['User_id']; 
           $_SESSION['Usertype'] = $row['User'];
           $type = "success";
           $msg = "Login successful!";

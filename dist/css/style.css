@@ -10,7 +10,6 @@
 @import url(plugins/perfect-scrollbar.css);
 @import url(plugins/animate.min.css);
 /*RESET*/
-
 html,
 body,
 div,
@@ -7703,4 +7702,3 @@ ul li:last-child .card-list-4 {
     display: none;
   }
 }
-

@@ -83,7 +83,7 @@ if ($result && mysqli_num_rows($result) > 0) {
               </div>
               <div class="single-apply-jobs">
                 <div class="row align-items-center">
-                  <div class="col-md-5"><a class="btn btn-default mr-15" href="#">Apply now</a><a class="btn btn-border" href="#">Save job</a></div>
+                  <div class="col-md-5"><a class="btn btn-default mr-15" href="applynow.php?job_id=<?php echo $row['Job_id']; ?>">Apply now</a><a class="btn btn-border" href="#">Save job</a></div>
                 </div>
               </div>
             </div>
