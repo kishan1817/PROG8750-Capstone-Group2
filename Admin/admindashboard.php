@@ -113,12 +113,14 @@
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
 
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
         }
+
         .card:hover .h4 {
             color: #ffffff;
         }
@@ -131,6 +133,7 @@
         p {
             font-size: 1rem;
         }
+
         .table-container {
             width: 100%;
             overflow-x: auto;
@@ -156,26 +159,31 @@
             margin-right: 5px;
             cursor: pointer;
         }
+        canvas {
+            max-width: 800px;
+        }
         h2 {
     text-align: center;
     margin-top: 20px; /* Adjust as needed */
 }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js library -->
+ 
 </head>
 <body>
 <nav class="nav-bar">
     <div class="icon-nav">
-  <a href="admindashboard.php">  <span class="logo"><img src="../dist/images/logo.png" alt="Logo" height="50px" width="160px"></span></a>
+    <a href="admindashboard.php">  <span class="logo"><img src="../dist/images/logo.png" alt="Logo" height="50px" width="160px"></span></a>
     </div>
 
     <ul class="list-nav-bar active">
-    <li class="list-item"><a href="admindashboard.php">Home</a></li>
+        <li class="list-item"><a href="admindashboard.php">Home</a></li>
         <li class="list-item"><a href="#">Logout</a></li>
     </ul>
     <div class="fas burger-menu" id="burger-menu">&#9776;</div>
 </nav>
 <div class="container">
-<a href="manageemployer.php" class="card">
+    <a href="manageemployer.php" class="card">
         <span class="h4">Manage Employer</span>
     </a>
     <a href="manageuser.php" class="card">
@@ -184,36 +192,52 @@
     <a href="deletejobs.php" class="card">
         <span class="h4">Delete Jobs</span>
     </a>
-    <h2> Manage User</h2>
-    <div class="table-container">
-    <table>
-        <thead>
-            <tr>
-                <th>User Id</th>
-                <th>User Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>001</td>
-                <td>User 1</td>
-                <td>
-                    <button type="button" class="btn btn-primary">Edit</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>002</td>
-                <td>User 2</td>
-                <td>
-                    <button type="button" class="btn btn-primary">Edit</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </td>
-            </tr>
-            <!-- Add more rows as needed with sample data -->
-        </tbody>
-    </table>
 </div>
+<h2> Job Posting Analytics </h2>
+<div class="container">
+    <canvas id="myChart"></canvas>
+</div>
+<script>
+    // Sample data for the chart
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [{
+                label: 'Sales',
+                data: [12, 19, 3, 5, 2, 3, 8],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
 </body>
 </html>

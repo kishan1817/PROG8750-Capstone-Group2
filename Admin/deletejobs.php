@@ -165,7 +165,7 @@
 <body>
 <nav class="nav-bar">
     <div class="icon-nav">
-  <a href="admindashboard.php">  <span class="logo"><img src="../dist/images/logo.png" alt="Logo" height="50px" width="160px"></span></a>
+    <a href="admindashboard.php">  <span class="logo"><img src="../dist/images/logo.png" alt="Logo" height="50px" width="160px"></span></a>
     </div>
 
     <ul class="list-nav-bar active">
@@ -184,20 +184,20 @@
     <a href="deletejobs.php" class="card">
         <span class="h4">Delete Jobs</span>
     </a>
-    <h2> Manage User</h2>
+    <h2> Delete Job Post</h2>
     <div class="table-container">
     <table>
         <thead>
             <tr>
-                <th>User Id</th>
-                <th>User Name</th>
+                <th>Job Id</th>
+                <th>Employer Name</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>001</td>
-                <td>User 1</td>
+                <td>Employer 1</td>
                 <td>
                     <button type="button" class="btn btn-primary">Edit</button>
                     <button type="button" class="btn btn-danger">Delete</button>
@@ -205,7 +205,7 @@
             </tr>
             <tr>
                 <td>002</td>
-                <td>User 2</td>
+                <td>Employer 2</td>
                 <td>
                     <button type="button" class="btn btn-primary">Edit</button>
                     <button type="button" class="btn btn-danger">Delete</button>
