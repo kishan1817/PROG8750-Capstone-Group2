@@ -31,7 +31,7 @@
                   <option value="Development">Development</option>
                 </select>
               </div>
-              <select name="location" class="form-input mr-10 select-active">
+              <select name="Location" class="form-input mr-10 select-active">
                 <option value="">Select City</option>
                 <option value="Ajax">Ajax</option>
                 <option value="Algoma">Algoma</option>
@@ -465,8 +465,9 @@
                 // Retrieve filter parameters from the URL or form submission
 
                 $industry = isset($_GET['industry']) ? $_GET['industry'] : '';
-                $jobType = isset($_GET['job_type']) ? $_GET['job_type'] : '';
+                $location = isset($_GET['Location']) ? $_GET['Location'] : '';
                 $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+                //echo $location;
 
                 // Start building the SQL query
                 $sql = "SELECT * FROM tbl_jobs WHERE 1"; // The WHERE 1 is a no-op, allowing for easy appending of conditions
@@ -475,8 +476,8 @@
                 if (!empty($industry)) {
                     $sql .= " AND Industry = '" . mysqli_real_escape_string($dbconnection, $industry) . "'";
                 }
-                if (!empty($jobType)) {
-                    $sql .= " AND Job_type = '" . mysqli_real_escape_string($dbconnection, $jobType) . "'";
+                if (!empty($location)) {
+                    $sql .= " AND Location = '" . mysqli_real_escape_string($dbconnection, $location) . "'";
                 }
                 if (!empty($keyword)) {
                   $sql .= " AND Title LIKE '%" . mysqli_real_escape_string($dbconnection, $keyword) . "%'";
