@@ -463,8 +463,10 @@
               <?php 
 
                 // Retrieve filter parameters from the URL or form submission
+
                 $industry = isset($_GET['industry']) ? $_GET['industry'] : '';
                 $jobType = isset($_GET['job_type']) ? $_GET['job_type'] : '';
+                $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
 
                 // Start building the SQL query
                 $sql = "SELECT * FROM tbl_jobs WHERE 1"; // The WHERE 1 is a no-op, allowing for easy appending of conditions
@@ -476,6 +478,9 @@
                 if (!empty($jobType)) {
                     $sql .= " AND Job_type = '" . mysqli_real_escape_string($dbconnection, $jobType) . "'";
                 }
+                if (!empty($keyword)) {
+                  $sql .= " AND Title LIKE '%" . mysqli_real_escape_string($dbconnection, $keyword) . "%'";
+              }
 
                 // Execute the query
                 $result = mysqli_query($dbconnection, $sql);
