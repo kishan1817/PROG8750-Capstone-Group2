@@ -67,7 +67,7 @@
             text-transform: uppercase;
             outline: 0;
             border-radius: 10px;
-            background: #1ADBE5;
+            background: rgba(8, 28, 138, 0.72);
             width: 100%;
             border: 0;
             padding: 15px;
@@ -77,7 +77,7 @@
         }
 
         .form button:hover, .form button:active, .form button:focus {
-            background-color: #06C5CF;
+            background-color: rgba(8, 28, 138, 0.72);
             transition: all 1s ease 0s;
         }
 
@@ -101,7 +101,7 @@
     </div>
     <div class="form">
         <p>Admin Login</p>
-        <form id="loginForm" action="admin-pannel.php" method="post">
+        <form id="loginForm" action="admindashboard.php" method="post">
             <input type="text" name="username" placeholder="username">
             <input type="password" name="password" placeholder="password">
             <button type="submit">Login</button>

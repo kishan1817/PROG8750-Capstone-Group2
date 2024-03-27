@@ -158,7 +158,7 @@
         }
         h2 {
     text-align: center;
-    margin-top: 20px; /* Adjust as needed */
+    margin-top: 20px; 
 }
     </style>
 </head>
@@ -211,7 +211,7 @@
                     <button type="button" class="btn btn-danger">Delete</button>
                 </td>
             </tr>
-            <!-- Add more rows as needed with sample data -->
+           
         </tbody>
     </table>
 </div>

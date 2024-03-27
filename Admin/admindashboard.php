@@ -100,8 +100,8 @@
         }
 
         .card {
-            height: 10em;
-            width: 20.75em;
+            height: 5em;
+            width: 21.75em;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -164,10 +164,19 @@
         }
         h2 {
     text-align: center;
-    margin-top: 20px; /* Adjust as needed */
+    margin-top: 20px; 
 }
+ .doughnut-container {
+            text-align: center;
+            margin-top: 30px; /* Adjust as needed */
+        }
+
+        .doughnut-chart {
+            max-width: 400px;
+            margin: 0 auto;
+        }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
  
 </head>
 <body>
@@ -195,34 +204,33 @@
 </div>
 <h2> Job Posting Analytics </h2>
 <div class="container">
-    <canvas id="myChart"></canvas>
+    <canvas id="barchart"></canvas>
 </div>
 <script>
-    // Sample data for the chart
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
+    var ctx = document.getElementById('barchart').getContext('2d');
+    var barchart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
             datasets: [{
-                label: 'Sales',
-                data: [12, 19, 3, 5, 2, 3, 8],
+                label: 'Job Postings',
+                data: [12, 19, 3, 5, 2, 3, 8,3,6,7,1,8],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
                     'rgba(255, 99, 132, 0.2)'
                 ],
                 borderColor: [
                     'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 99, 132, 1)',
                     'rgba(255, 99, 132, 1)'
                 ],
                 borderWidth: 1
@@ -239,5 +247,6 @@
         }
     });
 </script>
+
 </body>
 </html>
