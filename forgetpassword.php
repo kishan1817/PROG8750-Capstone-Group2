@@ -56,12 +56,7 @@ include ('include/script.php');
                </script>
            <?php
         }else{
-            // generate token by binaryhexa 
-            $token = bin2hex(random_bytes(50));
-
-            //session_start ();
-            $_SESSION['token'] = $token;
-            $_SESSION['email'] = $email;
+            
 
             require "Mail/phpmailer/PHPMailerAutoload.php";
             $mail = new PHPMailer;
@@ -73,14 +68,14 @@ include ('include/script.php');
             $mail->SMTPSecure='tls';
 
             // h-hotel account
-            $mail->Username='18bmiit067@gmail.com';
-            $mail->Password='ylhd gqfr kjvd geev';
+            $mail->Username='youremail';
+            $mail->Password='yourpassword';
 
             // send by h-hotel email
-            $mail->setFrom('18bmiit067@gmail.com', 'Password Reset');
+            $mail->setFrom('your email', 'Password Reset');
             // get email from input
             $mail->addAddress($_POST["Email"]);
-            //$mail->addReplyTo('lamkaizhe16@gmail.com');
+            
 
             // HTML body
             $mail->isHTML(true);
