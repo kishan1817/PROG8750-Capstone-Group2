@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="login_footer form-group d-flex justify-content-between">
               <label class="cb-container">
                 <input type="checkbox"><span class="text-small">Remember me</span><span class="checkmark"></span>
-              </label><a class='text-muted' href='#'>Forgot Password</a>
+              </label><a class='text-muted' href='forgetpassword.php'>Forgot Password</a>
             </div>
             <div class="form-group">
               <button class="btn btn-brand-1 hover-up w-100" type="submit" name="login">Login</button>
