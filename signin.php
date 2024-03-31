@@ -13,26 +13,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
+        if($row['Status']==1){
+          if ($password==$row['Password']) {
+            $_SESSION['User_id'] = $row['User_id']; 
+            $_SESSION['Usertype'] = $row['User'];
+            $type = "success";
+            $msg = "Login successful!";
+            echo "<script>
+              swal({
+                  title: \"Job Nest\",
+                  text: \"" . $msg . "\",
+                  icon: \"success\"
+              }).then((value) => {
+                  window.location.href = 'index.php'; // Redirect to homepage or dashboard
+              });
+            </script>";
         
-        if ($password==$row['Password']) {
-          $_SESSION['User_id'] = $row['User_id']; 
-          $_SESSION['Usertype'] = $row['User'];
-          $type = "success";
-          $msg = "Login successful!";
-          echo "<script>
-            swal({
-                title: \"Job Nest\",
-                text: \"" . $msg . "\",
-                icon: \"success\"
-            }).then((value) => {
-                window.location.href = 'index.php'; // Redirect to homepage or dashboard
-            });
-          </script>";
-       
-          
-        } else {
-            $type = "error";
-          $msg = "Invalid Password";
+            
+          } else {
+              $type = "error";
+            $msg = "Invalid Password";
+            print_r("<script>swal({ title:\"Job Nest\", text: '".$msg."', icon: \"".$type."\"});</script>");
+          }
+        }
+        else{
+          $type = "error";
+          $msg = "Account Blocked";
           print_r("<script>swal({ title:\"Job Nest\", text: '".$msg."', icon: \"".$type."\"});</script>");
         }
     } else {

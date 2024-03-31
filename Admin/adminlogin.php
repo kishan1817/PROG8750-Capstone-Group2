@@ -1,3 +1,47 @@
+<?php
+session_start(); // Start the session
+require '../include/config.php'; // Include your database connection
+$loginError = ''; // Initialize login error message
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if($_POST['username'] != "" && $_POST['password'] != ""){
+    // Get username and password from form
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Prepare SQL statement 
+    $stmt = $dbconnection->prepare("SELECT Email, Password FROM tbl_adminlogin WHERE Email = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        // Verify password
+        if ($password == $row['Password']) {
+            // Login successful
+            $_SESSION['loggedin'] = true;
+            $_SESSION['username'] = $username;
+            header("Location: admindashboard.php"); // Redirect to a success page
+            exit(); // Prevent further execution
+        } else {
+            // Invalid password
+            $loginError = 'Invalid username or password';
+        }
+    } else {
+        // Username doesn't exist
+        $loginError = 'Invalid username or password';
+    }
+    $stmt->close();
+    $dbconnection->close();
+    }
+    else{
+        $loginError = 'Please enter Username and Password';
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,18 +145,14 @@
     </div>
     <div class="form">
         <p>Admin Login</p>
-        <form id="loginForm" action="admindashboard.php" method="post">
-            <input type="text" name="username" placeholder="username">
-            <input type="password" name="password" placeholder="password">
+        <form id="loginForm" action="#" method="post">
+            <input type="text" name="username" placeholder="username" require>
+            <input type="password" name="password" placeholder="password" require>
             <button type="submit">Login</button>
         </form>
+        <?php if ($loginError): ?>
+            <script>alert('<?php echo $loginError; ?>');</script>
+        <?php endif; ?>
     </div>
-
-    <script>
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            window.location.href = this.getAttribute("action");
-        });
-    </script>
 </body>
 </html>

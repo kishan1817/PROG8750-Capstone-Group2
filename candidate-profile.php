@@ -158,8 +158,9 @@ $jobCount=0;
                     <div><h3 class="mt-0 color-brand-1 mb-50">My Jobs</h3></div>
                     <div class="row">
                     <?php 
+                    $userid = $_SESSION["User_id"];
 
-                      $query = "SELECT * FROM tbl_jobs ORDER BY Posted_at DESC";
+                      $query = "SELECT * FROM tbl_jobs where Status=1 and User_id=$userid ORDER BY Posted_at DESC";
                       $result = mysqli_query($dbconnection, $query);
                       $jobCount = 0; // Counter to keep track of jobs
                       // Function to truncate job description

@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });</script>";
     } else {
         // If validation passes, insert user
-        $query = "INSERT INTO tbl_users (First_Name, Last_Name, Email, Password, Phone, User) VALUES ('$firstName', '$lastName', '$email', '$password', '$phone', '$userType')";
+        $query = "INSERT INTO tbl_users (First_Name, Last_Name, Email, Password, Phone, User, Status) VALUES ('$firstName', '$lastName', '$email', '$password', '$phone', '$userType', 1)";
         if (mysqli_query($dbconnection, $query)) {
             echo "<script src='https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>";
             echo "<script>swal({ title: 'Job Nest', text: 'Registration successful!', icon: 'success'}).then((value) => {

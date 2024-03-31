@@ -1,3 +1,4 @@
+<?php include 'adminheader.php'; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -163,8 +164,8 @@
             max-width: 800px;
         }
         h2 {
-    text-align: center;
-    margin-top: 20px; 
+        text-align: center;
+        margin-top: 20px; 
 }
  .doughnut-container {
             text-align: center;
@@ -179,30 +180,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
  
 </head>
-<body>
-<nav class="nav-bar">
-    <div class="icon-nav">
-    <a href="admindashboard.php">  <span class="logo"><img src="../dist/images/logo.png" alt="Logo" height="50px" width="160px"></span></a>
-    </div>
+<body
 
-    <ul class="list-nav-bar active">
-        <li class="list-item"><a href="admindashboard.php">Home</a></li>
-        <li class="list-item"><a href="#">Logout</a></li>
-    </ul>
-    <div class="fas burger-menu" id="burger-menu">&#9776;</div>
-</nav>
-<div class="container">
-    <a href="manageemployer.php" class="card">
-        <span class="h4">Manage Employer</span>
-    </a>
-    <a href="manageuser.php" class="card">
-        <span class="h4">Manage User</span>
-    </a>
-    <a href="deletejobs.php" class="card">
-        <span class="h4">Delete Jobs</span>
-    </a>
-</div>
-<h2> Job Posting Analytics </h2>
+<h2></h2>
 <div class="container">
     <canvas id="barchart"></canvas>
 </div>
@@ -213,7 +193,7 @@
         data: {
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
             datasets: [{
-                label: 'Job Postings',
+                label: 'Job Posting Analytics',
                 data: [12, 19, 3, 5, 2, 3, 8,3,6,7,1,8],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',

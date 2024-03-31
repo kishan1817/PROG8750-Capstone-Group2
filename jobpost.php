@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $posted_at = date('Y-m-d');
     // Get user_id from session
     $user_id = $_SESSION['User_id'];
+    $satus = 1;
     
 
     // Validate required fields
@@ -89,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Upload file to server
                 if (move_uploaded_file($_FILES["logo"]["tmp_name"], $targetFilePath)) {
                     // Insert into database
-                    $stmt = $dbconnection->prepare("INSERT INTO tbl_jobs (Company, Logo, Title, Description, Location, Salary, Industry, Job_type, Job_level, Experience, Deadline, Posted_at, User_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    $stmt = $dbconnection->prepare("INSERT INTO tbl_jobs (Company, Logo, Title, Description, Location, Salary, Industry, Job_type, Job_level, Experience, Deadline, Posted_at, User_id, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,1)");
                     $stmt->bind_param("sssssdsssissi", $company, $targetFilePath, $title, $description, $location, $salary, $industry, $job_type, $job_level, $experience, $deadline, $posted_at, $user_id);
 
                     if ($stmt->execute()) {

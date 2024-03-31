@@ -470,7 +470,7 @@
                 //echo $location;
 
                 // Start building the SQL query
-                $sql = "SELECT * FROM tbl_jobs WHERE 1"; // The WHERE 1 is a no-op, allowing for easy appending of conditions
+                $sql = "SELECT * FROM tbl_jobs WHERE Status=1 AND 1"; // The WHERE 1 is a no-op, allowing for easy appending of conditions
 
                 // Append conditions based on filters
                 if (!empty($industry)) {

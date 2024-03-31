@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2024 at 01:59 AM
+-- Generation Time: Mar 31, 2024 at 05:23 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,6 +24,24 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_adminlogin`
+--
+
+CREATE TABLE `tbl_adminlogin` (
+  `Email` varchar(50) NOT NULL,
+  `Password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_adminlogin`
+--
+
+INSERT INTO `tbl_adminlogin` (`Email`, `Password`) VALUES
+('jk@gmail.com', 'admin123');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_application`
 --
 
@@ -31,10 +49,20 @@ CREATE TABLE `tbl_application` (
   `Application_id` int(11) NOT NULL,
   `Job_id` int(11) NOT NULL,
   `User_id` int(11) NOT NULL,
-  `Cover_Letter` blob NOT NULL,
-  `Resume` blob NOT NULL,
+  `Cover_Letter` blob DEFAULT NULL,
+  `Resume` varchar(100) NOT NULL,
   `Applied_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_application`
+--
+
+INSERT INTO `tbl_application` (`Application_id`, `Job_id`, `User_id`, `Cover_Letter`, `Resume`, `Applied_at`) VALUES
+(9, 28, 12, NULL, 'Resume/Kishan_Resume_Staples.pdf', '2024-03-22'),
+(10, 28, 12, NULL, 'Resume/Kishankumar_Joshi_winners.pdf', '2024-03-22'),
+(13, 28, 12, NULL, 'Resume/Kishankumar Joshi Resume.pdf', '2024-03-22'),
+(14, 28, 12, NULL, 'Resume/Kishan_Resume.pdf', '2024-03-22');
 
 -- --------------------------------------------------------
 
@@ -81,8 +109,20 @@ CREATE TABLE `tbl_jobs` (
   `Experience` int(11) NOT NULL,
   `Deadline` date NOT NULL,
   `Posted_at` date NOT NULL,
-  `User_id` int(11) NOT NULL
+  `User_id` int(11) NOT NULL,
+  `Status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_jobs`
+--
+
+INSERT INTO `tbl_jobs` (`Job_id`, `Company`, `Logo`, `Title`, `Description`, `Location`, `Salary`, `Industry`, `Job_type`, `Job_level`, `Experience`, `Deadline`, `Posted_at`, `User_id`, `Status`) VALUES
+(11, 'Concentrix', 'StoredImages/brand-8.png', 'Customer Service Advisor', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure do', 'Cambridge', 450000, 'Management', 'Part time', 'Intermidiate', 1, '2024-03-09', '2024-03-08', 12, 1),
+(13, 'Gamerflit', 'StoredImages/brand-10.png', 'Full Stack Engineer', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure do', 'Waterloo', 50000, 'Software', 'Contract', 'Entery', 1, '2024-03-30', '2024-03-08', 12, 1),
+(28, 'Food World', 'StoredImages/brand-7.png', 'Cook', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure do', 'Waterloo', 600000, 'Food', 'Contract', 'Intermidiate', 3, '2024-03-16', '2024-03-19', 12, 1),
+(30, 'Bell', 'StoredImages/brand-1.png', 'Manager', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure do', 'Kitchener', 80000, 'Management', 'Full Time', 'Intermidiate', 3, '2024-03-30', '2024-03-26', 17, 1),
+(32, 'Rogers', 'StoredImages/brand-3.png', 'Salesman', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure do', 'Cambridge', 50000, 'Management', 'Part time', 'Entery', 1, '2024-04-05', '2024-03-31', 12, 1);
 
 -- --------------------------------------------------------
 
@@ -116,18 +156,19 @@ CREATE TABLE `tbl_users` (
   `Email` varchar(80) NOT NULL,
   `Password` varchar(50) NOT NULL,
   `Phone` bigint(20) NOT NULL,
-  `User` varchar(20) NOT NULL
+  `User` varchar(20) NOT NULL,
+  `Status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_users`
 --
 
-INSERT INTO `tbl_users` (`User_id`, `First_Name`, `Last_Name`, `Email`, `Password`, `Phone`, `User`) VALUES
-(11, 'Ajay', 'Gosai', 'ajay.gosai@gmail.com', '9876543210', 8200916191, 'j'),
-(12, 'Kishankumar', 'Joshi', '18bmiit067@gmail.com', 'Kishan1718@', 5483330718, 'employer'),
-(13, 'Kishankumar', 'Joshi', 'kishan.joshi.1807@gmail.com', 'Kishan1718@', 5483330718, 'job seeker'),
-(14, 'aj', 'go', '18bmiit068@gmail.com', 'Kishan1718@', 1234567890, 'job seeker');
+INSERT INTO `tbl_users` (`User_id`, `First_Name`, `Last_Name`, `Email`, `Password`, `Phone`, `User`, `Status`) VALUES
+(12, 'Kishankumar', 'Joshi', '18bmiit067@gmail.com', 'Kishan1718@', 5483330718, 'employer', 1),
+(13, 'Kishankumar', 'Joshi', 'kishan.joshi.1807@gmail.com', 'Kishan1718@', 5483330718, 'job seeker', 1),
+(14, 'aj', 'go', '18bmiit068@gmail.com', 'Kishan1718@', 1234567890, 'job seeker', 1),
+(17, 'ajay', 'gosai', 'ajay@gmail.com', 'Ajay@123', 7894561230, 'employer', 1);
 
 --
 -- Indexes for dumped tables
@@ -182,7 +223,7 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_application`
 --
 ALTER TABLE `tbl_application`
-  MODIFY `Application_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Application_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tbl_categories`
@@ -200,7 +241,7 @@ ALTER TABLE `tbl_company`
 -- AUTO_INCREMENT for table `tbl_jobs`
 --
 ALTER TABLE `tbl_jobs`
-  MODIFY `Job_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Job_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `tbl_jobseekerprofile`
@@ -212,7 +253,7 @@ ALTER TABLE `tbl_jobseekerprofile`
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `User_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `User_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Constraints for dumped tables

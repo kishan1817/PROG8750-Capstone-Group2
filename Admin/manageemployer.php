@@ -1,3 +1,39 @@
+<?php include 'adminheader.php'; 
+// Check if the toggle_status button was clicked
+if (isset($_POST['toggle_status'])) {
+    $userId = $_POST['user_id'];
+    $currentStatus = $_POST['current_status'];
+    $newStatus = $currentStatus ? 0 : 1; // Toggle the status
+
+    // SQL to update the status
+    $sql = "UPDATE tbl_users SET Status = ? WHERE User_id = ?";
+    $stmt = $dbconnection->prepare($sql);
+    $stmt->bind_param("ii", $newStatus, $userId);
+    $stmt->execute();
+    $stmt->close();
+
+    // Refresh the page to reflect changes
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit;
+}
+$usertype = "employer";
+// SQL query to fetch all users
+$sql = "SELECT User_id, First_Name, Last_Name, Status FROM tbl_users where User = '$usertype'";
+$result = $dbconnection->query($sql);
+
+$users = []; // Initialize an empty array to store user data
+
+// Check if there are any results
+if ($result->num_rows > 0) {
+    // Output data of each row into the array
+    while($row = $result->fetch_assoc()) {
+        $users[] = $row;
+    }
+} else {
+    echo "0 results";
+}
+$dbconnection->close();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -144,7 +180,7 @@
 
         th, td {
             border: 1px solid #dddddd;
-            text-align: left;
+            text-align: center;
             padding: 8px;
         }
 
@@ -163,27 +199,8 @@
     </style>
 </head>
 <body>
-<nav class="nav-bar">
-    <div class="icon-nav">
-    <a href="admindashboard.php">  <span class="logo"><img src="../dist/images/logo.png" alt="Logo" height="50px" width="160px"></span></a>
-    </div>
-
-    <ul class="list-nav-bar active">
-    <li class="list-item"><a href="admindashboard.php">Home</a></li>
-        <li class="list-item"><a href="#">Logout</a></li>
-    </ul>
-    <div class="fas burger-menu" id="burger-menu">&#9776;</div>
-</nav>
 <div class="container">
-<a href="manageemployer.php" class="card">
-        <span class="h4">Manage Employer</span>
-    </a>
-    <a href="manageuser.php" class="card">
-        <span class="h4">Manage User</span>
-    </a>
-    <a href="deletejobs.php" class="card">
-        <span class="h4">Delete Jobs</span>
-    </a>
+
     <h2> Manage Employer</h2>
     <div class="table-container">
     <table>
@@ -191,26 +208,26 @@
             <tr>
                 <th>Employer Id</th>
                 <th>Employer Name</th>
-                <th>Actions</th>
+                <th>Current Status</th>
             </tr>
         </thead>
         <tbody>
+        <?php foreach ($users as $user): ?>
             <tr>
-                <td>001</td>
-                <td>Employer 1</td>
-                <td>
-                    <button type="button" class="btn btn-primary">Edit</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </td>
+            <td><?php echo htmlspecialchars($user['User_id']); ?></td>
+            <td><?php echo htmlspecialchars($user['First_Name']) . " " . htmlspecialchars($user['Last_Name']); ?></td>
+            <td><form method="post" action="">
+                        <input type="hidden" name="user_id" value="<?php echo $user['User_id']; ?>">
+                        <input type="hidden" name="current_status" value="<?php echo $user['Status']; ?>">
+                        <center>
+                            <button type="submit" class="btn <?php echo $user['Status'] ? 'btn-success' : 'btn-danger'; ?>" name="toggle_status">
+                                <?php echo $user['Status'] ? 'Active' : 'Deactive'; ?>
+                            </button>
+                        </center>
+                </form>
+            </td>
             </tr>
-            <tr>
-                <td>002</td>
-                <td>Employer 2</td>
-                <td>
-                    <button type="button" class="btn btn-primary">Edit</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </td>
-            </tr>
+        <?php endforeach; ?>
         </tbody>
     </table>
 </div>
