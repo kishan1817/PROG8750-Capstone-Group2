@@ -528,7 +528,13 @@
                                       <span class="text-muted">/Hour</span>
                                   </div>
                                   <div class="col-lg-5 col-5 text-end">
-                                      <div><a class="btn btn-apply-now" href="jobdetails.php?job_id=<?php echo $row['Job_id']; ?>">Apply now</a></div>
+                                      <div><a class="btn btn-apply-now" href="jobdetails.php?job_id=<?php echo $row['Job_id']; ?>">Apply now</a>
+                                        <form action="save_job.php" method="post">
+        <input type="hidden" name="job_id" value="' . $row['Job_id']; . '" />
+        <input type="hidden" name="user_id" value="' . $_SESSION['User_id'] . '" /> 
+        <input class="btn btn-primary" type="submit" name="save_job" value="Save Job" />
+      </form>
+                                      </div>
                                   </div>
                               </div>
                           </div>

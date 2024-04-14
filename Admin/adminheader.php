@@ -28,4 +28,8 @@ require '../include/config.php';
     <a href="deletejobs.php" class="card">
         <span class="h4">Manage Jobs</span>
     </a>
+    <a href="managemembership.php" class="card">
+        <span class="h4">Manage Membership</span>
+    </a>
+
 </div>
