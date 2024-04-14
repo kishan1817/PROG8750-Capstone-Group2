@@ -180,7 +180,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
  
 </head>
-<body
+<body>
 
 <h2></h2>
 <div class="container">

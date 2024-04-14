@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2024 at 05:23 PM
+-- Generation Time: Apr 14, 2024 at 07:10 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -62,7 +62,8 @@ INSERT INTO `tbl_application` (`Application_id`, `Job_id`, `User_id`, `Cover_Let
 (9, 28, 12, NULL, 'Resume/Kishan_Resume_Staples.pdf', '2024-03-22'),
 (10, 28, 12, NULL, 'Resume/Kishankumar_Joshi_winners.pdf', '2024-03-22'),
 (13, 28, 12, NULL, 'Resume/Kishankumar Joshi Resume.pdf', '2024-03-22'),
-(14, 28, 12, NULL, 'Resume/Kishan_Resume.pdf', '2024-03-22');
+(14, 28, 12, NULL, 'Resume/Kishan_Resume.pdf', '2024-03-22'),
+(15, 13, 17, NULL, 'Resume/Kishan_Resume.pdf', '2024-04-02');
 
 -- --------------------------------------------------------
 
@@ -143,6 +144,37 @@ CREATE TABLE `tbl_jobseekerprofile` (
   `Postal_code` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `tbl_jobseekerprofile`
+--
+
+INSERT INTO `tbl_jobseekerprofile` (`Jobsekker_profile_id`, `User_id`, `Resume`, `Education`, `Experience`, `Skills`, `City`, `State`, `Country`, `Postal_code`) VALUES
+(1, 13, '', '', '', '', 'Cambridge', 'Ontario', 'Canada', 'N1R0E2'),
+(2, 13, '', '', '', '', 'Kitchener', 'Ontario', 'Canada', 'N2C 2J9');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_membership`
+--
+
+CREATE TABLE `tbl_membership` (
+  `Membership_id` int(11) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `Description` varchar(255) NOT NULL,
+  `Price` float NOT NULL,
+  `Status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_membership`
+--
+
+INSERT INTO `tbl_membership` (`Membership_id`, `Name`, `Description`, `Price`, `Status`) VALUES
+(1, 'Starter Connect', 'Post up to 5 job listings per month\r\nAccess to bas', 49, 1),
+(2, 'Growth Engage', 'Post up to 20 job listings per month\r\nAdvanced can', 149, 1),
+(3, 'Elite Hire', 'Unlimited job postings\r\nPremium candidate search f', 299, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -165,10 +197,21 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`User_id`, `First_Name`, `Last_Name`, `Email`, `Password`, `Phone`, `User`, `Status`) VALUES
-(12, 'Kishankumar', 'Joshi', '18bmiit067@gmail.com', 'Kishan1718@', 5483330718, 'employer', 1),
-(13, 'Kishankumar', 'Joshi', 'kishan.joshi.1807@gmail.com', 'Kishan1718@', 5483330718, 'job seeker', 1),
+(12, 'Kishankumar', 'Joshi', '18bmiit067@gmail.com', 'Kishan@1718', 5483330718, 'employer', 1),
+(13, 'Kishankumar', 'Joshi', 'kishan.joshi.1807@gmail.com', 'Kishan@123', 5483330718, 'job seeker', 1),
 (14, 'aj', 'go', '18bmiit068@gmail.com', 'Kishan1718@', 1234567890, 'job seeker', 1),
 (17, 'ajay', 'gosai', 'ajay@gmail.com', 'Ajay@123', 7894561230, 'employer', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_users_membership`
+--
+
+CREATE TABLE `tbl_users_membership` (
+  `Membership_id` int(11) NOT NULL,
+  `User_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
@@ -210,10 +253,22 @@ ALTER TABLE `tbl_jobseekerprofile`
   ADD KEY `User_id` (`User_id`);
 
 --
+-- Indexes for table `tbl_membership`
+--
+ALTER TABLE `tbl_membership`
+  ADD PRIMARY KEY (`Membership_id`);
+
+--
 -- Indexes for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
   ADD PRIMARY KEY (`User_id`);
+
+--
+-- Indexes for table `tbl_users_membership`
+--
+ALTER TABLE `tbl_users_membership`
+  ADD UNIQUE KEY `User_id` (`User_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -223,7 +278,7 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `tbl_application`
 --
 ALTER TABLE `tbl_application`
-  MODIFY `Application_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `Application_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tbl_categories`
@@ -247,7 +302,13 @@ ALTER TABLE `tbl_jobs`
 -- AUTO_INCREMENT for table `tbl_jobseekerprofile`
 --
 ALTER TABLE `tbl_jobseekerprofile`
-  MODIFY `Jobsekker_profile_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Jobsekker_profile_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbl_membership`
+--
+ALTER TABLE `tbl_membership`
+  MODIFY `Membership_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_users`
@@ -277,6 +338,12 @@ ALTER TABLE `tbl_jobs`
 --
 ALTER TABLE `tbl_jobseekerprofile`
   ADD CONSTRAINT `tbl_jobseekerprofile_ibfk_1` FOREIGN KEY (`User_id`) REFERENCES `tbl_users` (`User_id`);
+
+--
+-- Constraints for table `tbl_users_membership`
+--
+ALTER TABLE `tbl_users_membership`
+  ADD CONSTRAINT `tbl_users_membership_ibfk_1` FOREIGN KEY (`User_id`) REFERENCES `tbl_users` (`User_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
