@@ -507,7 +507,7 @@
                       <div class="card-grid-2-image-left">
                           <div class="image-box"><img src="<?php echo $row['Logo']; ?>" alt="<?php echo $row['Company']; ?>"></div>
                           <div class="right-info">
-                              <a class='name-job' href='company-details.php?job_id=<?php echo $row['Job_id']; ?>'><?php echo $row['Company']; ?></a>
+                              <a class='name-job' href='jobdetails.php?job_id=<?php echo $row['Job_id']; ?>'><?php echo $row['Company']; ?></a>
                               <span class="location-small"><?php echo $row['Location']; ?></span>
                           </div>
                       </div>
@@ -529,6 +529,11 @@
                                       <span class="text-muted">/Hour</span>
                                   </div>
                                   <div class="col-lg-5 col-5 text-end">
+                                      <div><a class="btn btn-apply-now" href="save_job_action.php?job_id=<?php echo $row['Job_id']; ?>">Save Job</a></div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-lg-12 col-12">
                                       <div><a class="btn btn-apply-now" href="jobdetails.php?job_id=<?php echo $row['Job_id']; ?>">Apply now</a></div>
                                   </div>
                               </div>

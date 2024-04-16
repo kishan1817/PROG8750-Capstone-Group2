@@ -18,7 +18,13 @@ include ('include/session.php');
                 <?php if(isset($_SESSION['User_id'])): ?>
                   <li><a href='joblist.php'>Job List</a></li>
                   <li><a href='candidate-profile.php'>Profile</a></li>
+                  <?php if ($_SESSION['Usertype'] == 'employer'): ?>
+                    <li><a href='applied-list.php'>Applied List</a></li>
+                  <?php elseif ($_SESSION['Usertype'] == 'job seeker'): ?>
+                    <li><a href='save-job.php'>Saved Jobs</a></li>
+                  <?php endif; ?>
                 <?php endif; ?>
+                  
               </ul>
             </nav>
             <div class="burger-icon burger-icon-white"><span class="burger-icon-top"></span><span class="burger-icon-mid"></span><span class="burger-icon-bottom"></span></div>

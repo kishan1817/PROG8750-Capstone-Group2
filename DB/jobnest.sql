@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2024 at 07:10 PM
+-- Generation Time: Apr 16, 2024 at 04:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -51,19 +51,20 @@ CREATE TABLE `tbl_application` (
   `User_id` int(11) NOT NULL,
   `Cover_Letter` blob DEFAULT NULL,
   `Resume` varchar(100) NOT NULL,
-  `Applied_at` date NOT NULL
+  `Applied_at` date NOT NULL,
+  `status` enum('Pending','Accept','Reject') DEFAULT 'Pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_application`
 --
 
-INSERT INTO `tbl_application` (`Application_id`, `Job_id`, `User_id`, `Cover_Letter`, `Resume`, `Applied_at`) VALUES
-(9, 28, 12, NULL, 'Resume/Kishan_Resume_Staples.pdf', '2024-03-22'),
-(10, 28, 12, NULL, 'Resume/Kishankumar_Joshi_winners.pdf', '2024-03-22'),
-(13, 28, 12, NULL, 'Resume/Kishankumar Joshi Resume.pdf', '2024-03-22'),
-(14, 28, 12, NULL, 'Resume/Kishan_Resume.pdf', '2024-03-22'),
-(15, 13, 17, NULL, 'Resume/Kishan_Resume.pdf', '2024-04-02');
+INSERT INTO `tbl_application` (`Application_id`, `Job_id`, `User_id`, `Cover_Letter`, `Resume`, `Applied_at`, `status`) VALUES
+(9, 28, 12, NULL, 'Resume/Kishan_Resume_Staples.pdf', '2024-03-22', 'Pending'),
+(10, 28, 12, NULL, 'Resume/Kishankumar_Joshi_winners.pdf', '2024-03-22', 'Pending'),
+(13, 28, 12, NULL, 'Resume/Kishankumar Joshi Resume.pdf', '2024-03-22', 'Pending'),
+(14, 28, 12, NULL, 'Resume/Kishan_Resume.pdf', '2024-03-22', 'Pending'),
+(15, 13, 17, NULL, 'Resume/Kishan_Resume.pdf', '2024-04-02', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -178,6 +179,26 @@ INSERT INTO `tbl_membership` (`Membership_id`, `Name`, `Description`, `Price`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_saved_jobs`
+--
+
+CREATE TABLE `tbl_saved_jobs` (
+  `user_id` int(11) NOT NULL,
+  `job_id` int(11) NOT NULL,
+  `saved_on` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_saved_jobs`
+--
+
+INSERT INTO `tbl_saved_jobs` (`user_id`, `job_id`, `saved_on`) VALUES
+(18, 11, '2024-04-16 00:30:11'),
+(18, 13, '2024-04-16 00:00:36');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_users`
 --
 
@@ -200,7 +221,8 @@ INSERT INTO `tbl_users` (`User_id`, `First_Name`, `Last_Name`, `Email`, `Passwor
 (12, 'Kishankumar', 'Joshi', '18bmiit067@gmail.com', 'Kishan@1718', 5483330718, 'employer', 1),
 (13, 'Kishankumar', 'Joshi', 'kishan.joshi.1807@gmail.com', 'Kishan@123', 5483330718, 'job seeker', 1),
 (14, 'aj', 'go', '18bmiit068@gmail.com', 'Kishan1718@', 1234567890, 'job seeker', 1),
-(17, 'ajay', 'gosai', 'ajay@gmail.com', 'Ajay@123', 7894561230, 'employer', 1);
+(17, 'ajay', 'gosai', 'ajay@gmail.com', 'Ajay@123', 7894561230, 'employer', 1),
+(18, 'Ajay', 'Gosai', 'ajay.gosai35@gmail.com', 'Ajay@1234', 9876543210, 'job seeker', 1);
 
 -- --------------------------------------------------------
 
@@ -259,6 +281,13 @@ ALTER TABLE `tbl_membership`
   ADD PRIMARY KEY (`Membership_id`);
 
 --
+-- Indexes for table `tbl_saved_jobs`
+--
+ALTER TABLE `tbl_saved_jobs`
+  ADD PRIMARY KEY (`user_id`,`job_id`),
+  ADD KEY `job_id` (`job_id`);
+
+--
 -- Indexes for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
@@ -314,7 +343,7 @@ ALTER TABLE `tbl_membership`
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `User_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `User_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
@@ -338,6 +367,13 @@ ALTER TABLE `tbl_jobs`
 --
 ALTER TABLE `tbl_jobseekerprofile`
   ADD CONSTRAINT `tbl_jobseekerprofile_ibfk_1` FOREIGN KEY (`User_id`) REFERENCES `tbl_users` (`User_id`);
+
+--
+-- Constraints for table `tbl_saved_jobs`
+--
+ALTER TABLE `tbl_saved_jobs`
+  ADD CONSTRAINT `tbl_saved_jobs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`User_id`),
+  ADD CONSTRAINT `tbl_saved_jobs_ibfk_2` FOREIGN KEY (`job_id`) REFERENCES `tbl_jobs` (`Job_id`);
 
 --
 -- Constraints for table `tbl_users_membership`
