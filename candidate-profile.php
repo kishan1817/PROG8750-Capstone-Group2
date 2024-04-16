@@ -14,6 +14,7 @@ if (!isset($_SESSION["User_id"])) {
 $user_id = $_SESSION["User_id"];
 
 
+
 // SQL query to fetch jobs posted by the logged-in user
 $sql = "SELECT Job_id, Company, Logo, Title, Description, Location, Salary, Industry, Job_type, Job_level, Experience, Deadline, Posted_at FROM tbl_jobs WHERE User_id = ?";
 $stmt = $dbconnection->prepare($sql);
@@ -21,20 +22,36 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $jobCount=0;
+
+$sql1 = "SELECT * FROM tbl_users WHERE User_id = ?";
+$stmt = $dbconnection->prepare($sql1);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result1 = $stmt->get_result();
+
+
 ?>
 	<main class="main">
       <section class="section-box-2">
         <div class="container">
           <div class="banner-hero banner-image-single"><img src="dist/images/candidates/img.png" alt="jobnest"><a class="btn-editor" href="#"></a></div>
           <div class="box-company-profile">
+          <?php
+                // Check if the query returned any rows
+                if ($result1->num_rows > 0) {
+                    // Fetching each row as an associative array
+                    while ($row = $result1->fetch_assoc()) {
+                        ?>
             <div class="image-compay"><img src="dist/images/candidates/candidate-profile.png" alt="jobnest"></div>
             <div class="row mt-10">
               <div class="col-lg-8 col-md-12">
-                <h5 class="f-18">Ajay Gosai <span class="card-location font-regular ml-20">Cambridge, CA</span></h5>
+                <h5 class="f-18"><?php echo $row["First_Name"]." ".$row["Last_Name"]; ?><span class="card-location font-regular ml-20">Cambridge, CA</span></h5>
                 <p class="mt-0 font-md color-text-paragraph-2 mb-15">UI/UX Designer. Front end Developer</p>
               </div>
               <div class="col-lg-4 col-md-12 text-lg-end"><a class='btn btn-preview-icon btn-apply btn-apply-big' href='#'>Preview</a></div>
             </div>
+           
+
           </div>
           <div class="border-bottom pt-10 pb-10"></div>
         </div>
@@ -47,10 +64,8 @@ $jobCount=0;
                 <ul class="nav" role="tablist">
                   <li><a class="btn btn-border aboutus-icon mb-20 active" href="#tab-my-profile" data-bs-toggle="tab" role="tab" aria-controls="tab-my-profile" aria-selected="true">My Profile</a></li>
                   <li><a class="btn btn-border recruitment-icon mb-20" href="#tab-my-jobs" data-bs-toggle="tab" role="tab" aria-controls="tab-my-jobs" aria-selected="false">My Jobs</a></li>
-                  <!-- <li><a class="btn btn-border people-icon mb-20" href="#tab-saved-jobs" data-bs-toggle="tab" role="tab" aria-controls="tab-saved-jobs" aria-selected="false">Saved Jobs</a></li> -->
                 </ul>
                 <div class="border-bottom pt-10 pb-10"></div>
-               
               </div>
             </div>
             <div class="col-lg-9 col-md-8 col-sm-12 col-12 mb-50">
@@ -65,11 +80,11 @@ $jobCount=0;
                       <div class="col-lg-6 col-md-12">
                         <div class="form-group">
                           <label class="font-sm color-text-mutted mb-10">Full Name *</label>
-                          <input class="form-control" type="text" value="Ajay Gosai">
+                          <input class="form-control" type="text" value="<?php echo $row["First_Name"]; ?>">
                         </div>
                         <div class="form-group">
                           <label class="font-sm color-text-mutted mb-10">Email *</label>
-                          <input class="form-control" type="text" value="ajaygosai@gmail.com">
+                          <input class="form-control" type="text" value="<?php echo $row["Email"]; ?>">
                         </div>
                         <div class="form-group">
                           <label class="font-sm color-text-mutted mb-10">Contact number</label>
@@ -149,6 +164,13 @@ $jobCount=0;
                       </div>
                     </div>
                   </div>
+                   <?php
+                    }
+                } else {
+                    echo "<p>No results found</p>";
+                }
+                ?>
+
 
                   <!-- Job post display start-->
                     <div class="tab-pane fade" id="tab-my-jobs" role="tabpanel" aria-labelledby="tab-my-jobs">
