@@ -209,8 +209,18 @@ $jobCount=0;
                                         </div>
                                         <div class="col-lg-5 col-5 text-end">
                                             <div><span><a class="btn btn-warning" href="jobpost.php?Job_id=<?php echo $row['Job_id']?>">Edit</a></span></div>
-                                            <div><span><button type="submit" ndata-id="POST_ID" class="btn btn-danger" onclick="deleteItem(<?php echo $jobId; ?>)">Delete</button></span></form></div>
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-lg-12 col-12">
+                                        <div>
+                                            <span>
+                                                <button type="button" data-job-id="<?php echo $row['Job_id']; ?>" class="btn btn-danger delete-btn">Delete</button>
+                                            </span>
+                                        </div>
+                                        </form>
+
+                                      </div>
                                     </div>
                                 </div>
                             </div>
@@ -280,65 +290,54 @@ $jobCount=0;
 	
   
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script>document.querySelectorAll('.delete-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        var postId = this.getAttribute('data-id');
-        swal({
-            title: "Are you sure?",
-            text: "Once deleted, you will not be able to recover this post!",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((willDelete) => {
-            if (willDelete) {
-                // AJAX request to PHP script for deletion
-                fetch('delete_post.php', {
-                    method: 'POST',
-                    body: JSON.stringify({ id: postId }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(response => response.json())
-                .then(data => {
-                    if(data.success) {
-                        swal("Poof! Your post has been deleted!", {
-                            icon: "success",
-                        });
-                        // Optionally, remove the post element or refresh the page
-                    } else {
-                        swal("Error! There was a problem deleting your post.", {
-                            icon: "error",
-                        });
-                    }
-                });
-            }
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+    var deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            var jobId = this.getAttribute('data-job-id');
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this job post!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    fetch('delete_post.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'action=delete&job_id=' + jobId
+                    }).then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            swal({
+                                title: "deleted Successfully",
+                                text: "deleted Successfully",
+                                icon: "success",
+                            }).then(() => {
+                                location.reload(); // Reload the page to update the list of job posts
+                            });
+                        } else {
+                            swal({
+                                title: "Error in deletion",
+                                text: "Error in deletion",
+                                icon: "error",
+                            });
+                        }
+                    });
+                }
+            });
         });
     });
 });
 </script>
+
  
-<?php 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'delete'){
-  error_log("AJAX action: " . $_POST['action'] . ", itemId: " . $_POST['itemId']);
 
-  
-  // Assuming you're using PDO for database connection
-  require_once 'path/to/your/config.php';
-  
-  $data = json_decode(file_get_contents('php://input'), true);
-  $postId = $data['id'];
-  
-  // SQL to delete post
-  $sql = "DELETE FROM your_table_name WHERE Post_id = :postId";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([':postId' => $postId]);
-  
-  echo json_encode(['success' => true]);
-  
-  
-}
-
-?>
 </body>
 </html>

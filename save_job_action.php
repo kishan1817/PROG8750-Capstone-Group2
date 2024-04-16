@@ -14,23 +14,26 @@ if (isset($_GET['job_id']) && isset($_SESSION['User_id'])) {
 
     if ($stmt->affected_rows === 1) {
         // Redirect back to joblist or to a confirmation page
-        header("Location: joblist.php?status=success");
         $type = "success";
             $msg = "Saved Successfully";
-            print_r("<script>swal({ title:\"Job Nest\", text: '".$msg."', icon: \"".$type."\"});</script>");
+            print_r("<script>swal({ title:\"Job Nest\", text: '".$msg."', icon: \"".$type."\"}).then((value) => {
+                  window.location.href = 'joblist.php';
+              });</script>");
     } else {
         // Handle errors, e.g., job already saved
-        header("Location: joblist.php?status=error");
         $type = "error";
             $msg = "job already saved";
-            print_r("<script>swal({ title:\"Job Nest\", text: '".$msg."', icon: \"".$type."\"});</script>");
+            print_r("<script>swal({ title:\"Job Nest\", text: '".$msg."', icon: \"".$type."\"}).then((value) => {
+                  window.location.href = 'joblist.php';
+              });</script>");
     }
 } else {
     // Redirect or error message if job_id or user_id are not set
-    header("Location: joblist.php?status=unauthorized");
     $type = "error";
             $msg = "unauthorized user";
-            print_r("<script>swal({ title:\"Job Nest\", text: '".$msg."', icon: \"".$type."\"});</script>");
+            print_r("<script>swal({ title:\"Job Nest\", text: '".$msg."', icon: \"".$type."\"}).then((value) => {
+                  window.location.href = 'joblist.php';
+              });</script>");
 }
 ?>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

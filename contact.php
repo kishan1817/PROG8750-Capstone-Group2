@@ -2,44 +2,53 @@
   $title = "Contact Us Page";
   include ('include/head.php');
   include ('include/header.php');
+  require('include/config.php');
+
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_SESSION['User_id'], $_POST['name'], $_POST['email'], $_POST['message'])) {
+        $user_id = $_SESSION['User_id'];
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $subject = $_POST['subject'] ?? 'No subject'; // Default subject if none provided
+        $message = $_POST['message'];
+
+        // Prepare SQL query to insert form data into the database
+        $stmt = $dbconnection->prepare("INSERT INTO tbl_contacts (user_id, name, email, subject, message) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("issss", $user_id, $name, $email, $subject, $message);
+        $stmt->execute();
+
+        // Check if the insertion was successful
+        if ($stmt->affected_rows === 1) {
+            $type = "success";
+          $msg = "We get your information";
+          print_r("<script>swal({ title:\"Job Nest\", text: '".$msg."', icon: \"".$type."\"}).then((value) => {
+                  window.location.href = 'contact.php';
+              });</script>");
+        } else {
+            $type = "error";
+          $msg = "Error occured while getting your information";
+          print_r("<script>swal({ title:\"Job Nest\", text: '".$msg."', icon: \"".$type."\"}).then((value) => {
+                  window.location.href = 'contact.php';
+              });</script>");
+        }
+        $stmt->close();
+    } else {
+        $type = "error";
+          $msg = "Please fill all required form";
+          print_r("<script>swal({ title:\"Job Nest\", text: '".$msg."', icon: \"".$type."\"});</script>");
+    }
+}
+
 ?>
 <main class="main">
-  <section class="section-box mt-80">
-    <div class="container">
-      <div class="box-info-contact">
-        <div class="row">
-          <div class="col-lg-3 col-md-6 col-sm-12 mb-30"><a href="index.php"><img src="dist/images/logo.png" alt="jobnest" width="150" height="60" class="mb-10"></a>
-            <div class="font-sm color-text-paragraph">25 Isherwood Avenue, Apt 109 Cambridge, N1R0E2, ON Canada<br> Phone: (123) 456-7890<br> Email: contact@jobnest.com</div><a class="text-uppercase color-brand-2 link-map" href="#">View map</a>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-12 mb-30">
-            <h6>London</h6>
-            <p class="font-sm color-text-paragraph mb-20">4140 Parker Rd. Allentown,<br class="d-none d-lg-block"> New Mexico 31134</p>
-            <h6>New York</h6>
-            <p class="font-sm color-text-paragraph mb-20">4140 Parker Rd. Allentown,<br class="d-none d-lg-block"> New Mexico 31134</p>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-12 mb-30">
-            <h6>Chicago</h6>
-            <p class="font-sm color-text-paragraph mb-20">4140 Parker Rd. Allentown,<br class="d-none d-lg-block"> New Mexico 31134</p>
-            <h6>San Francisco</h6>
-            <p class="font-sm color-text-paragraph mb-20">4140 Parker Rd. Allentown,<br class="d-none d-lg-block"> New Mexico 31134</p>
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-12 mb-30">
-            <h6>Sysney</h6>
-            <p class="font-sm color-text-paragraph mb-20">4140 Parker Rd. Allentown,<br class="d-none d-lg-block"> New Mexico 31134</p>
-            <h6>Singapore</h6>
-            <p class="font-sm color-text-paragraph mb-20">4140 Parker Rd. Allentown,<br class="d-none d-lg-block"> New Mexico 31134</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  
   <section class="section-box mt-70">
     <div class="container">
       <div class="row">
         <div class="col-lg-8 mb-40"><span class="font-md color-brand-2 mt-20 d-inline-block">Contact us</span>
           <h2 class="mt-5 mb-10">Get in touch</h2>
           <p class="font-md color-text-paragraph-2">The right move at the right time saves your investment. live<br class="d-none d-lg-block"> the dream of expanding your business.</p>
-          <form class="contact-form-style mt-30" id="contact-form" action="#" method="post">
+          <form class="contact-form-style mt-30" id="contact-form" action="" method="post">
             <div class="row wow animate__animated animate__fadeInUp" data-wow-delay=".1s">
               <div class="col-lg-6 col-md-6">
                 <div class="input-style mb-20">
@@ -58,7 +67,7 @@
               </div>
               <div class="col-lg-6 col-md-6">
                 <div class="input-style mb-20">
-                  <input class="font-sm color-text-paragraph-2" name="phone" placeholder="Phone number" type="tel">
+                  <input class="font-sm color-text-paragraph-2" name="subject" placeholder="Subject" type="text">
                 </div>
               </div>
               <div class="col-lg-12 col-md-12">
@@ -92,10 +101,13 @@
               </form>
             </div>
           </div>
-          <div class="col-xl-3 col-12 text-center d-none d-xl-block"><img src="dist/images/about/newsletter-right.png" alt="joxBox"></div>
+          <div class="col-xl-3 col-12 text-center d-none d-xl-block"><img src="dist/images/about/newsletter-right.png" alt="jobBox"></div>
         </div>
       </div>
     </div>
+    <?php
+$dbconnection->close();
+?>
   </section>
 </main>
 <?php
