@@ -177,6 +177,7 @@ $dbconnection->close();
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: auto;
         }
 
         th, td {
@@ -197,6 +198,7 @@ $dbconnection->close();
             text-align: center;
             margin-top: 20px; 
         }
+
     </style>
 </head>
 <body>
@@ -215,14 +217,24 @@ $dbconnection->close();
                 <th>Description</th>
                 <th>Price</th>
                 <th>Current Status</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        <?php foreach ($memberships as $membership): ?>
+        <?php 
+        function truncateText($text, $maxWords) {
+            $wordArray = explode(" ", $text); 
+            if (count($wordArray) > $maxWords) {
+                $text = implode(" ", array_slice($wordArray, 0, $maxWords)) . '...'; 
+            }
+            return $text;
+        }
+        
+        foreach ($memberships as $membership): ?>
             <tr>
             <td><?php echo htmlspecialchars($membership['Membership_id']); ?></td>
             <td><?php echo htmlspecialchars($membership['Name']); ?></td>
-            <td><?php echo htmlspecialchars($membership['Description']); ?></td>
+            <td><?php echo htmlspecialchars(truncateText($membership['Description'], 5)); ?></td>
             <td>$<?php echo htmlspecialchars($membership['Price']); ?></td>
             <td><form method="post" action="">
                         <input type="hidden" name="membership_id" value="<?php echo $membership['Membership_id']; ?>">
@@ -234,10 +246,32 @@ $dbconnection->close();
                         </center>
                 </form>
             </td>
+            <td>
+                    <a href="addmembership.php?membership_id=<?php echo $membership['Membership_id']; ?>" class="btn btn-warning">Update</a>&nbsp;
+                    <button onclick="deleteMembership(<?php echo $membership['Membership_id']; ?>);" class="btn btn-danger">Delete</button>
+                </td>
             </tr>
         <?php endforeach; ?>
         </tbody>
     </table>
 </div>
+<script>
+function deleteMembership(membershipId) {
+    if(confirm('Are you sure you want to delete this membership?')) {
+        $.ajax({
+            url: 'delete_membership.php',
+            type: 'POST',
+            data: {membership_id: membershipId},
+            success: function(response) {
+                if(response == 'ok') {
+                    $('#membership-' + membershipId).remove();
+                } else {
+                    alert('Error deleting membership');
+                }
+            }
+        });
+    }
+}
+</script>
 </body>
 </html>

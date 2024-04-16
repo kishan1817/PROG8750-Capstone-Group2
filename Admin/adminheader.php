@@ -31,5 +31,4 @@ require '../include/config.php';
     <a href="managemembership.php" class="card">
         <span class="h4">Manage Membership</span>
     </a>
-
 </div>

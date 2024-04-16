@@ -4,6 +4,7 @@
 <head>
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
     <style>
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
@@ -166,52 +167,100 @@
         h2 {
         text-align: center;
         margin-top: 20px; 
-}
- .doughnut-container {
-            text-align: center;
-            margin-top: 30px; /* Adjust as needed */
         }
 
-        .doughnut-chart {
-            max-width: 400px;
+        .chart-container {
+            width: 70%; /* Adjust the width as needed */
             margin: 0 auto;
+            text-align: center;
+        }
+
+        canvas {
+            max-width: 100%; /* Adjust the maximum width as needed */
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
  
 </head>
 <body>
-
-<h2></h2>
 <div class="container">
-    <canvas id="barchart"></canvas>
+    <!-- Dynamic data display -->
+    <div class="row">
+        <?php
+        // Include configuration file
+        require '../include/config.php';
+
+        // Count total applications
+        $sql = "SELECT COUNT(*) AS total_applications FROM tbl_application";
+        $result = $dbconnection->query($sql);
+        $row = $result->fetch_assoc();
+        $total_applications = $row['total_applications'];
+
+        // Count total job seekers
+        $sql = "SELECT COUNT(*) AS total_job_seekers FROM tbl_users WHERE User = 'job seeker'";
+        $result = $dbconnection->query($sql);
+        $row = $result->fetch_assoc();
+        $total_job_seekers = $row['total_job_seekers'];
+
+        // Count total employers
+        $sql = "SELECT COUNT(*) AS total_employers FROM tbl_users WHERE User = 'employer'";
+        $result = $dbconnection->query($sql);
+        $row = $result->fetch_assoc();
+        $total_employers = $row['total_employers'];
+
+        // Count total job posts
+        $sql = "SELECT COUNT(*) AS total_job_posts FROM tbl_jobs";
+        $result = $dbconnection->query($sql);
+        $row = $result->fetch_assoc();
+        $total_job_posts = $row['total_job_posts'];
+
+        // Count total memberships
+        $sql = "SELECT COUNT(*) AS total_memberships FROM tbl_membership";
+        $result = $dbconnection->query($sql);
+        $row = $result->fetch_assoc();
+        $total_memberships = $row['total_memberships'];
+
+        // Count total companies
+        $sql = "SELECT COUNT(DISTINCT Company) AS total_companies FROM tbl_jobs";
+        $result = $dbconnection->query($sql);
+        $row = $result->fetch_assoc();
+        $total_companies = $row['total_companies'];
+
+        // Close DB connection
+        $dbconnection->close();
+        ?>
+    </div>
 </div>
+
+
+<div class="chart-container">
+    <canvas id="myChart"></canvas>
+</div>
+
 <script>
-    var ctx = document.getElementById('barchart').getContext('2d');
-    var barchart = new Chart(ctx, {
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+            labels: ['Total Applications', 'Total Job Seekers', 'Total Employers', 'Total Job Posts', 'Total Memberships', 'Total Companies'],
             datasets: [{
-                label: 'Job Posting Analytics',
-                data: [12, 19, 3, 5, 2, 3, 8,3,6,7,1,8],
+                label: 'Statistics',
+                data: [<?php echo $total_applications; ?>, <?php echo $total_job_seekers; ?>, <?php echo $total_employers; ?>, <?php echo $total_job_posts; ?>, <?php echo $total_memberships; ?>, <?php echo $total_companies; ?>],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 99, 132, 0.2)'
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
                 ],
                 borderColor: [
                     'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 99, 132, 1)'
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
                 ],
                 borderWidth: 1
             }]
@@ -226,7 +275,9 @@
             }
         }
     });
+    
 </script>
 
+</script>
 </body>
 </html>

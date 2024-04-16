@@ -176,6 +176,7 @@ $dbconnection->close();
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: auto;
         }
 
         th, td {
@@ -193,9 +194,9 @@ $dbconnection->close();
             cursor: pointer;
         }
         h2 {
-    text-align: center;
-    margin-top: 20px; 
-}
+            text-align: center;
+            margin-top: 20px; 
+        }
     </style>
 </head>
 <body>
@@ -209,11 +210,12 @@ $dbconnection->close();
                 <th>Employer Id</th>
                 <th>Employer Name</th>
                 <th>Current Status</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach ($users as $user): ?>
-            <tr>
+            <tr id="user-<?php echo $user['User_id']; ?>">
             <td><?php echo htmlspecialchars($user['User_id']); ?></td>
             <td><?php echo htmlspecialchars($user['First_Name']) . " " . htmlspecialchars($user['Last_Name']); ?></td>
             <td><form method="post" action="">
@@ -226,10 +228,39 @@ $dbconnection->close();
                         </center>
                 </form>
             </td>
+            <td>
+                <a href="viewemployer.php?user_id=<?php echo $user['User_id']; ?>" class="btn btn-info">View Detail</a>
+                <button onclick="deleteMembership(<?php echo $user['User_id']; ?>);" class="btn btn-danger">Delete</button>
+            </td>
             </tr>
         <?php endforeach; ?>
         </tbody>
     </table>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+// Ensuring the deleteMembership function is in the global scope
+function deleteMembership(userId) {
+    // Confirm dialog check
+    if (confirm('Are you sure you want to delete this Employer?')) {
+        $.ajax({
+            url: 'deleteemployer.php',
+            type: 'POST',
+            dataType: 'json', // Ensure response is handled as JSON
+            data: {user_id: userId},
+            success: function(response) {
+                if (response.status === 'ok') {
+                    $('#user-' + userId).remove(); // Remove the row on success
+                } else {
+                    alert('Error deleting employer: ' + (response.message || 'Unknown error'));
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('AJAX request failed: ' + error);
+            }
+        });
+    }
+}
+</script>
 </body>
 </html>

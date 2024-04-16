@@ -211,11 +211,12 @@ $dbconnection->close();
                 <th>Job Title</th>
                 <th>User Id</th>
                 <th>Current Status</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach ($jobs as $job): ?>
-            <tr>
+            <tr  id="job-<?php echo $job['Job_id']; ?>">
             <td><?php echo htmlspecialchars($job['Job_id']); ?></td>
             <td><?php echo htmlspecialchars($job['Company']); ?></td>
             <td><?php echo htmlspecialchars($job['Title']); ?></td>
@@ -230,10 +231,38 @@ $dbconnection->close();
                         </center>
                 </form>
             </td>
+            <td>
+                <a href="viewjobpost.php?job_id=<?php echo $job['Job_id']; ?>" class="btn btn-info">View Detail</a>
+                <button onclick="deleteJobPost(<?php echo $job['Job_id']; ?>);" class="btn btn-danger">Delete</button>
+            </td>
             </tr>
         <?php endforeach; ?>
         </tbody>
     </table>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function deleteJobPost(jobId) {
+    if (confirm('Are you sure you want to delete this job post?')) {
+        $.ajax({
+            url: 'deletejobpost.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {job_id: jobId},
+            success: function(response) {
+                if (response.status === 'ok') {
+                    $('#job-' + jobId).fadeOut(500, function() { $(this).remove(); });
+                } else {
+                    alert('Error deleting job post: ' + (response.message || 'Unknown error'));
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('AJAX request failed: ' + error);
+            }
+        });
+    }
+}
+</script>
+
 </body>
 </html>

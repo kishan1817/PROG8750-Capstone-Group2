@@ -210,11 +210,12 @@ $dbconnection->close();
                 <th>User Id</th>
                 <th>User Name</th>
                 <th>Current Status</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach ($users as $user): ?>
-            <tr>
+            <tr id="user-<?php echo $user['User_id']; ?>">
             <td><?php echo htmlspecialchars($user['User_id']); ?></td>
             <td><?php echo htmlspecialchars($user['First_Name']) . " " . htmlspecialchars($user['Last_Name']); ?></td>
             <td><form method="post" action="">
@@ -227,10 +228,38 @@ $dbconnection->close();
                         </center>
                 </form>
             </td>
+            <td>
+                <a href="viewjobseeker.php?user_id=<?php echo $user['User_id']; ?>" class="btn btn-info">View Detail</a>
+                <button onclick="deleteJobSeeker(<?php echo $user['User_id']; ?>);" class="btn btn-danger">Delete</button>
+            </td>
             </tr>
         <?php endforeach; ?>
         </tbody>
     </table>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function deleteJobSeeker(userId) {
+    if (confirm('Are you sure you want to delete this user?')) {
+        $.ajax({
+            url: 'deletejobseeker.php',
+            type: 'POST',
+            dataType: 'json', // This ensures the response is parsed as JSON
+            data: {user_id: userId},
+            success: function(response) {
+                if (response.status === 'ok') {
+                    $('#user-' + userId).fadeOut(500, function() { $(this).remove(); });
+                } else {
+                    alert('Error deleting user: ' + (response.message || 'Unknown error'));
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('AJAX request failed: ' + error);
+            }
+        });
+    }
+}
+</script>
+
 </body>
 </html>
