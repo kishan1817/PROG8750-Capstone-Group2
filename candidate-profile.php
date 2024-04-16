@@ -205,7 +205,7 @@ $jobCount=0;
                                     <div class="row">
                                         <div class="col-lg-7 col-7">
                                             <span class="card-text-price">$<?php echo $row['Salary']; ?></span>
-                                            <span class="text-muted">/Hour</span>
+                                            <span class="text-muted">/Year</span>
                                         </div>
                                         <div class="col-lg-5 col-5 text-end">
                                             <div><span><a class="btn btn-warning" href="jobpost.php?Job_id=<?php echo $row['Job_id']?>">Edit</a></span></div>

@@ -512,7 +512,7 @@
                           </div>
                       </div>
                       <div class="card-block-info">
-                          <h6><a href='job-details.html'><?php echo $row['Title']; ?></a></h6>
+                          <h6><a href='jobdetails.php?job_id=<?php echo $row['Job_id']; ?>'><?php echo $row['Title']; ?></a></h6>
                           <div class="mt-5">
                               <span class="card-briefcase"><?php echo $row['Job_type']; ?></span>
                               <span class="card-time"><?php echo $row['Posted_at']; // You might want to format this date or calculate the time ago ?></span>
@@ -526,7 +526,7 @@
                               <div class="row">
                                   <div class="col-lg-7 col-7">
                                       <span class="card-text-price">$<?php echo $row['Salary']; ?></span>
-                                      <span class="text-muted">/Hour</span>
+                                      <span class="text-muted">/Year</span>
                                   </div>
                                   <div class="col-lg-5 col-5 text-end">
                                       <div><a class="btn btn-apply-now" href="save_job_action.php?job_id=<?php echo $row['Job_id']; ?>">Save Job</a></div>
