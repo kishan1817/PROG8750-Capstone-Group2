@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = mysqli_real_escape_string($dbconnection, $_POST['Password']);
     $phone = mysqli_real_escape_string($dbconnection, $_POST['Phone']);
     $userType = isset($_POST['User']) ? 'employer' : 'job seeker';
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Initial error message
     $errorMsg = '';
@@ -47,8 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             window.location.href = 'register.php';
         });</script>";
     } else {
-        // If validation passes, insert user
-        $query = "INSERT INTO tbl_users (First_Name, Last_Name, Email, Password, Phone, User, Status) VALUES ('$firstName', '$lastName', '$email', '$password', '$phone', '$userType', 1)";
+      
+        $query = "INSERT INTO tbl_users (First_Name, Last_Name, Email, Password, Phone, User, Status) VALUES ('$firstName', '$lastName', '$email', '$hashed_password', '$phone', '$userType', 1)";
         if (mysqli_query($dbconnection, $query)) {
             echo "<script src='https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>";
             echo "<script>swal({ title: 'Job Nest', text: 'Registration successful!', icon: 'success'}).then((value) => {

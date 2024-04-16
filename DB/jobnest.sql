@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2024 at 04:02 PM
+-- Generation Time: Apr 16, 2024 at 09:51 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -60,11 +60,7 @@ CREATE TABLE `tbl_application` (
 --
 
 INSERT INTO `tbl_application` (`Application_id`, `Job_id`, `User_id`, `Cover_Letter`, `Resume`, `Applied_at`, `status`) VALUES
-(9, 28, 12, NULL, 'Resume/Kishan_Resume_Staples.pdf', '2024-03-22', 'Pending'),
-(10, 28, 12, NULL, 'Resume/Kishankumar_Joshi_winners.pdf', '2024-03-22', 'Pending'),
-(13, 28, 12, NULL, 'Resume/Kishankumar Joshi Resume.pdf', '2024-03-22', 'Pending'),
-(14, 28, 12, NULL, 'Resume/Kishan_Resume.pdf', '2024-03-22', 'Pending'),
-(15, 13, 17, NULL, 'Resume/Kishan_Resume.pdf', '2024-04-02', 'Pending');
+(16, 36, 26, NULL, 'Resume/Kishan_Resume.pdf', '2024-04-16', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -89,6 +85,21 @@ CREATE TABLE `tbl_company` (
   `Industry` varchar(40) NOT NULL,
   `Description` varchar(500) NOT NULL,
   `Logo` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_contacts`
+--
+
+CREATE TABLE `tbl_contacts` (
+  `contact_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `subject` varchar(255) DEFAULT NULL,
+  `message` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -120,11 +131,10 @@ CREATE TABLE `tbl_jobs` (
 --
 
 INSERT INTO `tbl_jobs` (`Job_id`, `Company`, `Logo`, `Title`, `Description`, `Location`, `Salary`, `Industry`, `Job_type`, `Job_level`, `Experience`, `Deadline`, `Posted_at`, `User_id`, `Status`) VALUES
-(11, 'Concentrix', 'StoredImages/brand-8.png', 'Customer Service Advisor', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure do', 'Cambridge', 450000, 'Management', 'Part time', 'Intermidiate', 1, '2024-03-09', '2024-03-08', 12, 1),
-(13, 'Gamerflit', 'StoredImages/brand-10.png', 'Full Stack Engineer', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure do', 'Waterloo', 50000, 'Software', 'Contract', 'Entery', 1, '2024-03-30', '2024-03-08', 12, 1),
-(28, 'Food World', 'StoredImages/brand-7.png', 'Cook', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure do', 'Waterloo', 600000, 'Food', 'Contract', 'Intermidiate', 3, '2024-03-16', '2024-03-19', 12, 1),
-(30, 'Bell', 'StoredImages/brand-1.png', 'Manager', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure do', 'Kitchener', 80000, 'Management', 'Full Time', 'Intermidiate', 3, '2024-03-30', '2024-03-26', 17, 1),
-(32, 'Rogers', 'StoredImages/brand-3.png', 'Salesman', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure do', 'Cambridge', 50000, 'Management', 'Part time', 'Entery', 1, '2024-04-05', '2024-03-31', 12, 1);
+(34, 'Rogers', 'StoredImages/brand-1.png', 'Digital Marketing', ' Seeking a creative and data-driven Digital Marketing Specialist to develop, implement, track, and optimize our digital marketing campaigns across all digital channels. Ideal candidates should have a strong grasp of current marketing tools and strate', 'Waterloo', 50000, 'Advertising', 'Contract', 'Entery', 1, '2024-05-11', '2024-04-16', 24, 1),
+(35, 'RMES', 'StoredImages/brand-3.png', 'Assistant Manager', 'Seeking a creative and data-driven Digital Marketing Specialist to develop, implement, track, and optimize our digital marketing campaigns across all digital channels. Ideal candidates should have a strong grasp of current marketing tools and strateg', 'Kitchener', 600000, 'Management', 'Full Time', 'Entery', 3, '2024-05-02', '2024-04-16', 24, 1),
+(36, 'BuildRight Construction Group', 'StoredImages/brand-10.png', 'Project Manager', 'We are looking for an experienced Project Manager to manage organization of key client projects in the construction sector, ensuring completion on time, within budget and within scope. Overseeing all onsite and offsite constructions to monitor compli', 'Cambridge', 90000, 'Management', 'Full Time', 'Expert', 10, '2024-05-10', '2024-04-16', 25, 1),
+(37, 'TechSolutions Ltd.', 'StoredImages/brand-5.png', 'Senior Java Developer', 'Join our team as a Senior Java Developer where you will be involved in building high-performing, scalable, enterprise-grade applications. You will be part of a talented software team that works on mission-critical applications.\r\nRequirements: Hands-o', 'Waterloo', 600000, 'Software', 'Contract', 'Intermidiate', 3, '2024-04-30', '2024-04-16', 25, 1);
 
 -- --------------------------------------------------------
 
@@ -144,14 +154,6 @@ CREATE TABLE `tbl_jobseekerprofile` (
   `Country` varchar(50) NOT NULL,
   `Postal_code` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_jobseekerprofile`
---
-
-INSERT INTO `tbl_jobseekerprofile` (`Jobsekker_profile_id`, `User_id`, `Resume`, `Education`, `Experience`, `Skills`, `City`, `State`, `Country`, `Postal_code`) VALUES
-(1, 13, '', '', '', '', 'Cambridge', 'Ontario', 'Canada', 'N1R0E2'),
-(2, 13, '', '', '', '', 'Kitchener', 'Ontario', 'Canada', 'N2C 2J9');
 
 -- --------------------------------------------------------
 
@@ -188,14 +190,6 @@ CREATE TABLE `tbl_saved_jobs` (
   `saved_on` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `tbl_saved_jobs`
---
-
-INSERT INTO `tbl_saved_jobs` (`user_id`, `job_id`, `saved_on`) VALUES
-(18, 11, '2024-04-16 00:30:11'),
-(18, 13, '2024-04-16 00:00:36');
-
 -- --------------------------------------------------------
 
 --
@@ -207,7 +201,7 @@ CREATE TABLE `tbl_users` (
   `First_Name` varchar(40) NOT NULL,
   `Last_Name` varchar(40) NOT NULL,
   `Email` varchar(80) NOT NULL,
-  `Password` varchar(50) NOT NULL,
+  `Password` varchar(250) NOT NULL,
   `Phone` bigint(20) NOT NULL,
   `User` varchar(20) NOT NULL,
   `Status` int(11) NOT NULL
@@ -218,11 +212,9 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`User_id`, `First_Name`, `Last_Name`, `Email`, `Password`, `Phone`, `User`, `Status`) VALUES
-(12, 'Kishankumar', 'Joshi', '18bmiit067@gmail.com', 'Kishan@1718', 5483330718, 'employer', 1),
-(13, 'Kishankumar', 'Joshi', 'kishan.joshi.1807@gmail.com', 'Kishan@123', 5483330718, 'job seeker', 1),
-(14, 'aj', 'go', '18bmiit068@gmail.com', 'Kishan1718@', 1234567890, 'job seeker', 1),
-(17, 'ajay', 'gosai', 'ajay@gmail.com', 'Ajay@123', 7894561230, 'employer', 1),
-(18, 'Ajay', 'Gosai', 'ajay.gosai35@gmail.com', 'Ajay@1234', 9876543210, 'job seeker', 1);
+(24, 'Kishankumar', 'Joshi', '18bmiit067@gmail.com', '$2y$10$2jI2JUkKYnjUJNiN8NUniOUg0HhvrvQuVw3/85X7jcKICKcSYTe7W', 5467891230, 'employer', 1),
+(25, 'ajay', 'gosai', 'ajay.gosai35@gmail.com', '$2y$10$wFP5SL1FElnADYhog3Au4u444bqk.HbuZULwu8Qg2ZOTMour9pfem', 7894561230, 'employer', 1),
+(26, 'Kishankumar', 'Joshi', 'kishan.joshi.1807@gmail.com', '$2y$10$hQG/TufrQ3Bq1Id.tPA.N.Q5prmEXSt.8Tpfzcm0OJw8hn0dac4Hi', 5483330718, 'job seeker', 1);
 
 -- --------------------------------------------------------
 
@@ -258,6 +250,13 @@ ALTER TABLE `tbl_categories`
 --
 ALTER TABLE `tbl_company`
   ADD PRIMARY KEY (`Company_id`);
+
+--
+-- Indexes for table `tbl_contacts`
+--
+ALTER TABLE `tbl_contacts`
+  ADD PRIMARY KEY (`contact_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `tbl_jobs`
@@ -307,7 +306,7 @@ ALTER TABLE `tbl_users_membership`
 -- AUTO_INCREMENT for table `tbl_application`
 --
 ALTER TABLE `tbl_application`
-  MODIFY `Application_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `Application_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `tbl_categories`
@@ -322,10 +321,16 @@ ALTER TABLE `tbl_company`
   MODIFY `Company_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `tbl_contacts`
+--
+ALTER TABLE `tbl_contacts`
+  MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `tbl_jobs`
 --
 ALTER TABLE `tbl_jobs`
-  MODIFY `Job_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `Job_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `tbl_jobseekerprofile`
@@ -343,7 +348,7 @@ ALTER TABLE `tbl_membership`
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `User_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `User_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- Constraints for dumped tables
@@ -355,6 +360,12 @@ ALTER TABLE `tbl_users`
 ALTER TABLE `tbl_application`
   ADD CONSTRAINT `tbl_application_ibfk_1` FOREIGN KEY (`User_id`) REFERENCES `tbl_users` (`User_id`),
   ADD CONSTRAINT `tbl_application_ibfk_2` FOREIGN KEY (`Job_id`) REFERENCES `tbl_jobs` (`Job_id`);
+
+--
+-- Constraints for table `tbl_contacts`
+--
+ALTER TABLE `tbl_contacts`
+  ADD CONSTRAINT `tbl_contacts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`User_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `tbl_jobs`

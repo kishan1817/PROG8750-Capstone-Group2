@@ -4,7 +4,6 @@
 	include ('include/header.php');
   require_once 'include/config.php';
 
-  
 
 // Check if the user is logged in, if not then redirect to login page
 if (!isset($_SESSION["User_id"])) {
@@ -12,9 +11,7 @@ if (!isset($_SESSION["User_id"])) {
     exit;
 }
 
-
 $user_id = $_SESSION["User_id"];
-
 
 
 // SQL query to fetch jobs posted by the logged-in user
@@ -53,7 +50,7 @@ $jobCount=0;
                   <!-- <li><a class="btn btn-border people-icon mb-20" href="#tab-saved-jobs" data-bs-toggle="tab" role="tab" aria-controls="tab-saved-jobs" aria-selected="false">Saved Jobs</a></li> -->
                 </ul>
                 <div class="border-bottom pt-10 pb-10"></div>
-                <div class="mt-20 mb-20"><a class="link-red" href="#">Delete Account</a></div>
+               
               </div>
             </div>
             <div class="col-lg-9 col-md-8 col-sm-12 col-12 mb-50">
